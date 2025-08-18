@@ -1,0 +1,57 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { LocalStorageService } from './localStorage.service';
+import { ApiService } from './api.service';
+
+export interface ExtraPurchase{
+  id: string,
+  purchaseName: string,
+  purchaseDate: string,
+  purchaseTypePayment: string,
+  bankName: string,
+  purchaseValue: number,
+  monthPayment: number,
+  listFormatted: Array<{
+    purchaseName: string,
+    purchaseDate: string,
+    purchaseTypePayment: string,
+    bankName: string,
+    purchaseValue: number
+  }>
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class FinancasService {
+
+  constructor(
+    private http: HttpClient,
+    private localStorageService: LocalStorageService,
+    private apiService: ApiService
+  ) { }
+
+  //busca as compras extras que a pessoa registrou
+  listExtraPurhchases(body?: any): Observable<ExtraPurchase[]> {
+    return this.apiService.post('/extra-purchase/list', body).pipe(
+      map((response: any) => response as ExtraPurchase[]),
+      catchError(error => {
+        console.error('Erro ao buscar compras extras:', error);
+        return of([]);
+      })
+    );
+  }
+
+  //registra as compras extras
+  registerExtraPurchase(body: any): Observable<any> {
+    return this.apiService.post('/extra-purchase/register', body).pipe(
+      map((response: any) => response),
+      catchError(error => {
+        console.error('Erro ao registrar compra extra:', error);
+        return of(null);
+      })
+    );
+  }
+}
