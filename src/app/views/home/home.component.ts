@@ -120,7 +120,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
   }
 
-  deletarGasto(purchase: ExtraPurchase) {
+  deletarGastoExtra(purchase: ExtraPurchase) {
     console.log(purchase);
     const body = {
       id: purchase.id
@@ -131,8 +131,24 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.extraPurchases = this.extraPurchases.filter(p => p.id !== purchase.id);
         this.toastr.success('Despesa deletada!', 'Sucesso');
       } else {
-        // this.toastr.success('Erro ao deletar gasto.', 'error');
+        this.toastr.error('Erro ao deletar gasto.', 'Erro');
       }
     })
+  }
+
+  atualizarGastoExtra(purchase: ExtraPurchase) {
+    console.log(purchase);
+    // const body = {
+    //   id: purchase.id
+    // }
+
+    // this.extraPurchase.deletePurchase(body).subscribe(response => {
+    //   if (response) {
+    //     this.extraPurchases = this.extraPurchases.filter(p => p.id !== purchase.id);
+    //     this.toastr.success('Despesa deletada!', 'Sucesso');
+    //   } else {
+    //     this.toastr.error('Erro ao deletar gasto.', 'Erro');
+    //   }
+    // })
   }
 }

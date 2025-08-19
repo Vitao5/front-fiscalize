@@ -50,4 +50,15 @@ export class FinancasService {
     );
 
   }
+
+  //altera as informações da compra extra
+  updatePurchase(body: any): Observable<any> {
+    return this.apiService.post('/extra-purchase/update', body).pipe(
+      map((response: any) => response),
+      catchError(error => {
+        console.error('Erro ao atualizar compra extra:', error);
+        return of(null);
+      })
+    );
+  }
 }
