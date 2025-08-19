@@ -15,7 +15,6 @@ export class ApiService {
   constructor(
     private http: HttpClient,
     private cookieService: CookieService,
-    private toastr: ToastrService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) { }
 
@@ -72,7 +71,7 @@ export class ApiService {
     }
 
     console.error(errorMessage);
-    this.toastr.error(errorMessage, 'Erro');
+
     return throwError(() => new Error(errorMessage));
   }
 }

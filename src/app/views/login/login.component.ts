@@ -1,12 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { CookieService } from '../../service/cookie.service';
 import { LocalStorageService } from '../../service/localStorage.service';
 
-import { ApiService } from '../../service/api.service';
+
 import { LoginService } from '../../service/login.service';
 import { LoginInterface } from '../../interface/login';
 
@@ -29,7 +28,6 @@ export class LoginComponent implements OnInit {
     private cookieService: CookieService,
     private localStorage: LocalStorageService,
     private router: Router,
-    private apiService: ApiService,
     private loginService: LoginService
   ) { }
 
@@ -68,22 +66,29 @@ export class LoginComponent implements OnInit {
 
     this.carregando = true;
 
-    this.loginService.login(body, false).subscribe((response: LoginInterface) => {
-      this.carregando = false;
-      if (response.token) {
-        this.cookieService.setCookie('tokenLogin', response.token, 7);
+    this.loginService.login(body).subscribe({
+      next: (response: LoginInterface) => {
+        this.carregando = false;
+        if (response && response.token) {
+          this.cookieService.setCookie('tokenLogin', response.token, 7);
 
-        //monta objeto para salvar no localStorage
-        const user = {
-          name: response.name,
-          email: response.email,
-          userRoot: response.userRoot ? true : false,
-        };
-        this.localStorage.setItem('user', user);
+          //monta objeto para salvar no localStorage
+          const user = {
+            name: response.name,
+            email: response.email,
+            userRoot: response.userRoot ? true : false,
+          };
+          this.localStorage.setItem('user', user);
 
-        this.router.navigate(['/home']);
-      } else {
-        this.erroLogin = 'Erro ao fazer login. Tente novamente.';
+          this.router.navigate(['/home']);
+        } else {
+          this.erroLogin = 'Resposta inválida do servidor.';
+        }
+      },
+      error: (err) => {
+        this.carregando = false;
+
+        this.erroLogin = err.error.message ;
       }
     });
   }

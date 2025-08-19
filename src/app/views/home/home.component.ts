@@ -3,13 +3,14 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
 import { CdkDragEnd, DragDropModule } from '@angular/cdk/drag-drop';
 import { CookieService } from '../../service/cookie.service';
-import { FinancasService, ExtraPurchase} from '../../service/extraPurchase.service';
+import { FinancasService} from '../../service/extraPurchase.service';
 import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 import { LocalStorageService } from '../../service/localStorage.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DespesaMes} from "../../components/cards/despesa-mes/despesa-mes";
 import { ComunService } from '../../service/comun.service';
 import { ToastrService } from 'ngx-toastr';
+import { ExtraPurchase } from '../../interface/extra-puchase';
 
 @Component({
   selector: 'app-home',

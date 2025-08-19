@@ -13,8 +13,6 @@ import { ExtraPurchase } from '../interface/extra-puchase';
 export class FinancasService {
 
   constructor(
-    private http: HttpClient,
-    private localStorageService: LocalStorageService,
     private apiService: ApiService
   ) { }
 
@@ -42,8 +40,8 @@ export class FinancasService {
 
   //deleta o gasto extra
 
-  deletePurchase(body: any): Observable<any> {
-    return this.apiService.post('/extra-purchase/delete', body).pipe(
+  deletePurchase({ id }: { id: string }): Observable<any> {
+    return this.apiService.post('/extra-purchase/delete', id).pipe(
       map((response: any) => response),
       catchError(error => {
         console.error('Erro ao deletar compra extra:', error);

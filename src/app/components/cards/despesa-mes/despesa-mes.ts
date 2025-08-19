@@ -6,7 +6,6 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import moment from 'moment';
-import { After } from 'v8';
 import { ExtraPurchase } from '../../../interface/extra-puchase';
 
 @Component({
