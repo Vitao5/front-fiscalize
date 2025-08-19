@@ -97,24 +97,45 @@
         @if(extraPurchases.length > 0){
         <div class="space-y-4">
           @for (purchase of extraPurchases; track purchase.id) {
-          <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-            <div class="flex items-center space-x-4">
-              <div class="p-2 bg-blue-100 rounded-full">
-                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
-                </svg>
+
+            <div class="relative rounded-lg overflow-hidden bg-gray-200"style="cursor:grab;">
+              <div class="absolute top-0 left-0 w-full h-full flex items-center justify-between" >
+
+                <button class="h-full px-8 bg-blue-500 text-white flex items-center" (click)="deletarGasto(purchase)">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.5L15.232 5.232z"></path></svg>
+                </button>
+                <button class="h-full px-8 bg-red-500 text-white flex items-center" (click)="deletarGasto(purchase)">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                </button>
               </div>
-              <div>
-                <p class="font-medium text-gray-900">{{ purchase.purchaseName }}</p>
-                <p class="text-sm text-gray-500">{{purchase.purchaseDate}} • {{ purchase.bankName }}</p>
+
+              <div cdkDrag cdkDragLockAxis="x"
+                   (cdkDragEnded)="onDragEnded(purchase, $event)"
+                   [cdkDragFreeDragPosition]="dragPositions[purchase.id]"
+                   class="relative w-full bg-gray-50">
+
+                <div class="flex items-center justify-between p-4">
+                  <div class="flex items-center space-x-4">
+                    <div class="p-2 bg-blue-100 rounded-full">
+                      <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                      </svg>
+                    </div>
+                    <div>
+                      <p class="font-medium text-gray-900">{{ purchase.purchaseName }}</p>
+                      <p class="text-sm text-gray-500">{{purchase.purchaseDate}} • {{ purchase.bankName }}</p>
+                    </div>
+                  </div>
+                  <br>
+                  <div class="text-right">
+                    <p class="font-bold text-red-600">{{ formatarMoeda(purchase.purchaseValue) }}</p>
+                  </div>
+                </div>
+
               </div>
+
             </div>
-            <br>
-            <div class="text-right">
-              <p class="font-bold text-red-600">{{ formatarMoeda(purchase.purchaseValue) }}</p>
-            </div>
-          </div>
           }
         </div>
         }@else {

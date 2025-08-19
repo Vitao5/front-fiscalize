@@ -1,12 +1,13 @@
 import { ComunService } from './../../../service/comun.service';
 import { Component, Inject, Input, NgModule, Output, EventEmitter, PLATFORM_ID, AfterViewInit } from '@angular/core';
-import { ExtraPurchase, FinancasService } from '../../../service/financas.service';
+import { FinancasService } from '../../../service/extraPurchase.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import moment from 'moment';
 import { After } from 'v8';
+import { ExtraPurchase } from '../../../interface/extra-puchase';
 
 @Component({
   selector: 'app-despesa-mes',

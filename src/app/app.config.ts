@@ -7,7 +7,7 @@ import { provideToastr } from 'ngx-toastr';
 import { provideNgxMask } from 'ngx-mask';
 
 import { routes } from './app.routes';
-import { AuthInterceptor } from './service/auth.interceptor';
+import { AuthInterceptor } from './service/Interceptor/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [

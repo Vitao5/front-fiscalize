@@ -4,6 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { CookieService } from './cookie.service';
 import { isPlatformBrowser } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,7 @@ export class ApiService {
   constructor(
     private http: HttpClient,
     private cookieService: CookieService,
+    private toastr: ToastrService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) { }
 
@@ -26,7 +28,7 @@ export class ApiService {
     });
   }
 
-  // Métodos genéricos para requisições HTTP
+  // Metodos genéricos para requisições HTTP
   get<T>(endpoint: string, body: any): Observable<T> {
     return this.http.get<T>(`${this.apiUrl}${endpoint}`, { headers: this.getHeaders() })
       .pipe(
@@ -57,6 +59,7 @@ export class ApiService {
 
   // Tratamento de erros
   private handleError(error: any) {
+
     let errorMessage = 'Ocorreu um erro na comunicação com o servidor.';
 
     // Verificar se estamos no browser antes de usar ErrorEvent
@@ -69,6 +72,7 @@ export class ApiService {
     }
 
     console.error(errorMessage);
+    this.toastr.error(errorMessage, 'Erro');
     return throwError(() => new Error(errorMessage));
   }
 }

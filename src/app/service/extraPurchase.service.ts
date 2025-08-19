@@ -4,23 +4,8 @@ import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { LocalStorageService } from './localStorage.service';
 import { ApiService } from './api.service';
+import { ExtraPurchase } from '../interface/extra-puchase';
 
-export interface ExtraPurchase{
-  id: string,
-  purchaseName: string,
-  purchaseDate: string,
-  purchaseTypePayment: string,
-  bankName: string,
-  purchaseValue: number,
-  monthPayment: number,
-  listFormatted: Array<{
-    purchaseName: string,
-    purchaseDate: string,
-    purchaseTypePayment: string,
-    bankName: string,
-    purchaseValue: number
-  }>
-}
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +20,7 @@ export class FinancasService {
 
   //busca as compras extras que a pessoa registrou
   listExtraPurhchases(body?: any): Observable<ExtraPurchase[]> {
-    return this.apiService.post('/extra-purchase/list', body).pipe(
+    return this.apiService.post('/extra-purchase/list', body,).pipe(
       map((response: any) => response as ExtraPurchase[]),
       catchError(error => {
         console.error('Erro ao buscar compras extras:', error);
@@ -53,5 +38,18 @@ export class FinancasService {
         return of(null);
       })
     );
+  }
+
+  //deleta o gasto extra
+
+  deletePurchase(body: any): Observable<any> {
+    return this.apiService.post('/extra-purchase/delete', body).pipe(
+      map((response: any) => response),
+      catchError(error => {
+        console.error('Erro ao deletar compra extra:', error);
+        return of(null);
+      })
+    );
+
   }
 }
