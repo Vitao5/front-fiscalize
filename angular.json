@@ -75,6 +75,49 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
+            "server": {
+              "builder": "@angular-devkit/build-angular:server",
+              "options": {
+                "outputPath": "dist/front-fiscalize/server",
+                "main": "src/main.server.ts",
+                "tsConfig": "tsconfig.server.json"
+              },
+              "configurations": {
+                "production": {
+                  "outputPath": "dist/front-fiscalize/server",
+                  "main": "src/main.server.ts",
+                  "tsConfig": "tsconfig.server.json",
+                  "fileReplacements": [
+                    {
+                      "replace": "src/environments/environment.ts",
+                      "with": "src/environments/environment.prod.ts"
+                    }
+                  ]
+                },
+                "development": {
+                  "outputPath": "dist/front-fiscalize/server",
+                  "main": "src/main.server.ts",
+                  "tsConfig": "tsconfig.server.json",
+                  "fileReplacements": [
+                    {
+                      "replace": "src/environments/environment.ts",
+                      "with": "src/environments/environment.ts"
+                    }
+                  ]
+                },
+                "homolog": {
+                  "outputPath": "dist/front-fiscalize/server",
+                  "main": "src/main.server.ts",
+                  "tsConfig": "tsconfig.server.json",
+                  "fileReplacements": [
+                    {
+                      "replace": "src/environments/environment.ts",
+                      "with": "src/environments/environment.homolog.ts"
+                    }
+                  ]
+                }
+              }
+            },
               "buildTarget": "front-fiscalize:build:production"
             },
             "development": {
