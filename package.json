@@ -4,11 +4,14 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
-    "prd-build": "ng build --configuration production",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "serve:ssr:front-fiscalize": "node dist/front-fiscalize/server/server.mjs"
+  "build": "ng build",
+  "build:ssr:dev": "ng build --configuration development && ng run front-fiscalize:server:development",
+  "build:ssr:hml": "ng build --configuration homolog && ng run front-fiscalize:server:homolog",
+  "build:ssr:prd": "ng build --configuration production && ng run front-fiscalize:server:production",
+  "prd-build": "ng build --configuration production",
+  "watch": "ng build --watch --configuration development",
+  "test": "ng test",
+  "serve:ssr": "node dist/front-fiscalize/server/server.mjs"
   },
   "private": true,
   "dependencies": {

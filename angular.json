@@ -55,6 +55,19 @@
               "extractLicenses": false,
               "sourceMap": true
             }
+            ,
+            "homolog": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.homolog.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractLicenses": true
+            }
           },
           "defaultConfiguration": "production"
         },
@@ -66,6 +79,10 @@
             },
             "development": {
               "buildTarget": "front-fiscalize:build:development"
+            }
+            ,
+            "homolog": {
+              "buildTarget": "front-fiscalize:build:homolog"
             }
           },
           "defaultConfiguration": "development"
