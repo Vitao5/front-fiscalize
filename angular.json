@@ -20,19 +20,14 @@
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "polyfills": [ "zone.js"],
+            "polyfills": ["zone.js"],
             "assets": [
               "src/favicon.ico",
               "src/assets"
             ],
             "styles": [
               "src/styles.scss"
-            ],
-            "server": "src/main.server.ts",
-            "outputMode": "server",
-            "ssr": {
-              "entry": "src/server.ts"
-            }
+            ]
           },
           "configurations": {
             "production": {
@@ -54,8 +49,7 @@
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
-            }
-            ,
+            },
             "homolog": {
               "fileReplacements": [
                 {
@@ -71,81 +65,37 @@
           },
           "defaultConfiguration": "production"
         },
-        "serve": {
-          "builder": "@angular/build:dev-server",
+        "server": {
+          "builder": "@angular/build:server",
+          "options": {
+            "main": "src/main.server.ts",
+            "tsConfig": "tsconfig.server.json"
+          },
           "configurations": {
             "production": {
-            "server": {
-              "builder": "@angular-devkit/build-angular:server",
-              "options": {
-                "outputPath": "dist/front-fiscalize/server",
-                "main": "src/main.server.ts",
-                "tsConfig": "tsconfig.server.json"
-              },
-              "configurations": {
-                "production": {
-                  "outputPath": "dist/front-fiscalize/server",
-                  "main": "src/main.server.ts",
-                  "tsConfig": "tsconfig.server.json",
-                  "fileReplacements": [
-                    {
-                      "replace": "src/environments/environment.ts",
-                      "with": "src/environments/environment.prod.ts"
-                    }
-                  ]
-                },
-                "development": {
-                  "outputPath": "dist/front-fiscalize/server",
-                  "main": "src/main.server.ts",
-                  "tsConfig": "tsconfig.server.json",
-                  "fileReplacements": [
-                    {
-                      "replace": "src/environments/environment.ts",
-                      "with": "src/environments/environment.ts"
-                    }
-                  ]
-                },
-                "homolog": {
-                  "outputPath": "dist/front-fiscalize/server",
-                  "main": "src/main.server.ts",
-                  "tsConfig": "tsconfig.server.json",
-                  "fileReplacements": [
-                    {
-                      "replace": "src/environments/environment.ts",
-                      "with": "src/environments/environment.homolog.ts"
-                    }
-                  ]
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
                 }
-              }
-            },
-              "buildTarget": "front-fiscalize:build:production"
+              ]
             },
             "development": {
-              "buildTarget": "front-fiscalize:build:development"
-            }
-            ,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.ts"
+                }
+              ]
+            },
             "homolog": {
-              "buildTarget": "front-fiscalize:build:homolog"
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.homolog.ts"
+                }
+              ]
             }
-          },
-          "defaultConfiguration": "development"
-        },
-        "extract-i18n": {
-          "builder": "@angular/build:extract-i18n"
-        },
-        "test": {
-          "builder": "@angular/build:karma",
-          "options": {
-            "polyfills": [ "zone.js"],
-            "tsConfig": "tsconfig.spec.json",
-            "inlineStyleLanguage": "scss",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
-            "styles": [
-              "src/styles.scss"
-            ]
           }
         }
       }
