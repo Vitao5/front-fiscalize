@@ -37,6 +37,9 @@ yarn-error.log
 testem.log
 /typings
 
+# Arquivos de ambiente sensíveis
+src/environments/.env.secret
+
 # System files
 .DS_Store
 Thumbs.db

@@ -1,4 +1,6 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+// Update the path below if your environment.ts is located elsewhere
+import { environment } from '../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -10,7 +12,7 @@ import { ToastrService } from 'ngx-toastr';
   providedIn: 'root'
 })
 export class ApiService {
-  private apiUrl = 'http://localhost:3000/api';
+  private apiUrl = environment.apiUrl + '/api';
 
   constructor(
     private http: HttpClient,
