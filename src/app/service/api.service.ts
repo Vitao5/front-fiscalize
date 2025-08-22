@@ -1,5 +1,4 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
-// Update the path below if your environment.ts is located elsewhere
 import { environment } from '../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
@@ -12,15 +11,23 @@ import { ToastrService } from 'ngx-toastr';
   providedIn: 'root'
 })
 export class ApiService {
-  private apiUrl = environment.apiUrl + '/api';
+  private apiUrl: string;
 
   constructor(
     private http: HttpClient,
     private cookieService: CookieService,
     @Inject(PLATFORM_ID) private platformId: Object
-  ) { }
+  ) {
+    if (isPlatformBrowser(this.platformId)) {
 
-  // Método para obter headers com token de autenticação
+      this.apiUrl = environment.apiUrl + '/api';
+    } else {
+
+      const apiUrl = process.env['API_URL_HOMOLOG'] || process.env['API_URL_PROD'] || environment.apiUrl;
+      this.apiUrl = apiUrl + '/api';
+    }
+  }
+
   private getHeaders(): HttpHeaders {
     const token = this.cookieService.getCookie('tokenLogin');
     return new HttpHeaders({
@@ -29,7 +36,6 @@ export class ApiService {
     });
   }
 
-  // Metodos genéricos para requisições HTTP
   get<T>(endpoint: string, body: any): Observable<T> {
     return this.http.get<T>(`${this.apiUrl}${endpoint}`, { headers: this.getHeaders() })
       .pipe(
