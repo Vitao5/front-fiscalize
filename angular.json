@@ -20,7 +20,9 @@
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "polyfills": ["zone.js"],
+            "polyfills": [
+              "zone.js"
+            ],
             "assets": [
               "src/favicon.ico",
               "src/assets"
@@ -66,13 +68,15 @@
           "defaultConfiguration": "production"
         },
         "server": {
-          "builder": "@angular/build:server",
+          "builder": "@angular-devkit/build-angular:server",
           "options": {
+            "outputPath": "dist/front-fiscalize/server",
             "main": "src/main.server.ts",
             "tsConfig": "tsconfig.server.json"
           },
           "configurations": {
             "production": {
+              "outputPath": "dist/front-fiscalize/server",
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -81,6 +85,7 @@
               ]
             },
             "development": {
+              "outputPath": "dist/front-fiscalize/server",
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -89,6 +94,7 @@
               ]
             },
             "homolog": {
+              "outputPath": "dist/front-fiscalize/server",
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
