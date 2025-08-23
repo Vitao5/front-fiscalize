@@ -10,8 +10,8 @@ COPY . .
 # Instala dependências
 RUN npm install
 RUN npm install -g @angular/cli
+ENV PATH="/usr/local/bin:${PATH}"
 RUN npm run build:ssr:hml
-
 FROM node:20-alpine
 
 WORKDIR /app
