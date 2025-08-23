@@ -11,7 +11,7 @@ COPY . .
 RUN npm install
 
 # Build SSR (ajuste para prod ou homolog conforme necessário)
-RUN npm run build:ssr
+RUN npm run build:ssr:hml
 
 FROM node:20-alpine
 
