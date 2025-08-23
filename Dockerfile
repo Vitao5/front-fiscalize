@@ -22,5 +22,5 @@ RUN npm install --omit=dev
 
 EXPOSE 8080
 
-# CMD ["node", "dist/front-fiscalize/server/server.mjs"]
-CMD ["ls", "-R"]
+CMD ["node", "dist/front-fiscalize/server/main.mjs"]
+
