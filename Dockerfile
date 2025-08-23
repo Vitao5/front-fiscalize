@@ -22,5 +22,6 @@ RUN npm install --omit=dev
 
 EXPOSE 8080
 
-CMD ["node", "dist/front-fiscalize/server/main.js"]
+# CMD ["node", "dist/front-fiscalize/server/main.js"]
+CMD ["node", "-e", "console.log('Node.js está a funcionar ddwedweo do contentor.')"]
 
