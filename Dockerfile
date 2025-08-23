@@ -9,8 +9,7 @@ COPY . .
 
 # Instala dependências
 RUN npm install
-
-# Build SSR (ajuste para prod ou homolog conforme necessário)
+RUN npm install -g @angular/cli
 RUN npm run build:ssr:hml
 
 FROM node:20-alpine
