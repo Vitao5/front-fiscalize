@@ -11,13 +11,13 @@ COPY . .
 RUN npm install
 
 # Build SSR (ajuste para prod ou homolog conforme necessário)
-RUN RUN npm run build:ssr
-# Fase de produção
+RUN npm run build:ssr
+
 FROM node:20-alpine
 
 WORKDIR /app
 
-# Copia apenas o necessário da fase de build
+
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/package*.json ./
 
