@@ -11,8 +11,7 @@ COPY . .
 RUN npm install
 
 # Build SSR (ajuste para prod ou homolog conforme necessário)
-RUN npm run build:ssr:hml
-
+RUN RUN npm run build:ssr
 # Fase de produção
 FROM node:20-alpine
 
@@ -26,4 +25,4 @@ RUN npm install --omit=dev
 
 EXPOSE 8080
 
-CMD ["node", "dist/front-fiscalize/server/main.js"]
+CMD ["node", "dist/front-fiscalize/server/server.mjs"]
