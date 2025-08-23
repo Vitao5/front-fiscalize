@@ -18,10 +18,9 @@ WORKDIR /app
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/package*.json ./
 
-RUN npm install --omit=dev
+RUN npm install
 
 EXPOSE 8080
 
-# CMD ["node", "dist/front-fiscalize/server/main.js"]
-CMD ["node", "-e", "console.log('Node.js está a funcionar ddwedweo do contentor.')"]
+CMD ["node", "dist/front-fiscalize/server/main.js"]
 
