@@ -11,11 +11,14 @@
     "skipLibCheck": true,
     "isolatedModules": true,
     "experimentalDecorators": true,
+    "emitDecoratorMetadata": true, // Added to support Angular decorators
     "importHelpers": true,
     "target": "ES2017",
-    "module": "commonjs",
+    "module": "commonjs", // Changed from nodenext to commonjs
     "esModuleInterop": true,
-    "moduleResolution": "nodenext",
+    "allowSyntheticDefaultImports": true, // Added to support default imports
+    "moduleResolution": "node", // Changed from nodenext to node
+    "baseUrl": "./", // Added to fix path issues
     "paths": {
       "@angular/*": [
         "node_modules/@angular/*"
@@ -27,7 +30,6 @@
         "node_modules/tslib/tslib.d.ts"
       ]
     }
-  }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
