@@ -9,8 +9,7 @@ COPY . .
 RUN npm install
 RUN npm run build:ssr:hml
 
-# Lista os arquivos no diretório do servidor para depuração
-RUN ls -la dist/front-fiscalize/server
+# Estágio de execução
 FROM node:20-alpine
 
 WORKDIR /app
@@ -24,4 +23,4 @@ COPY --from=build /app/package-lock.json ./package-lock.json
 RUN npm ci --omit=dev
 
 # Comando de inicialização correto
-CMD ["node", "dist/front-fiscalize/server/server.mjs"]
+CMD ["node", "dist/front-fiscalize/server/main.js"]
