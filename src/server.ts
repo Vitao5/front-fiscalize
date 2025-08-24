@@ -5,10 +5,11 @@ import {
   writeResponseToNodeResponse,
 } from '@angular/ssr/node';
 import express from 'express';
-import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
 import { AddressInfo } from 'node:net';
 
-const browserDistFolder = join(import.meta.dirname, '../browser');
+const browserDistFolder = '/app/dist/front-fiscalize';
 
 const app = express();
 const angularApp = new AngularNodeAppEngine();
@@ -47,5 +48,5 @@ const server = app.listen(port, '0.0.0.0', (error?: Error) => {
   const { address, port } = server.address() as AddressInfo;
   console.log(`Node Express server listening on http://${address}:${port}`);
 });
-
+console.log("Servidor iniciado...");
 export const reqHandler = createNodeRequestHandler(app);
