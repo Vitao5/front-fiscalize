@@ -14,7 +14,20 @@
     "importHelpers": true,
     "target": "ES2017",
     "module": "commonjs",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "moduleResolution": "nodenext",
+    "paths": {
+      "@angular/*": [
+        "node_modules/@angular/*"
+      ],
+      "rxjs/*": [
+        "node_modules/rxjs/*"
+      ],
+      "tslib": [
+        "node_modules/tslib/tslib.d.ts"
+      ]
+    }
+  }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

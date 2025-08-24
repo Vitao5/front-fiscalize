@@ -6,19 +6,7 @@
     "types": ["node"],
     "module": "es2022",
     "esModuleInterop": true,
-    "noImplicitAny": false,
-    "moduleResolution": "nodenext",
-    "paths": {
-      "@angular/*": [
-        "node_modules/@angular/*"
-      ],
-      "rxjs/*": [
-        "node_modules/rxjs/*"
-      ],
-      "tslib": [
-        "node_modules/tslib/tslib.d.ts"
-      ]
-    }
+    "noImplicitAny": false
   },
 
   "files": [
