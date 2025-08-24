@@ -1,4 +1,4 @@
-FROM node:20-alpine AS build
+FROM node:20 AS build
 
 WORKDIR /app
 
@@ -10,7 +10,7 @@ RUN npm install
 RUN npm run build:ssr:hml
 
 # Estágio de execução
-FROM node:20-alpine
+FROM node:20
 
 WORKDIR /app
 
