@@ -34,6 +34,9 @@ app.use((req, res, next) => {
     .catch(next);
 });
 
+// Health check endpoint for Render
+app.get('/healthz', (req, res) => res.status(200).send('OK'));
+
 process.on('uncaughtException', err => {
   console.error('Uncaught Exception:', err);
 });
