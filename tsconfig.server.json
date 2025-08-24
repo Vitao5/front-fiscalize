@@ -7,7 +7,7 @@
     "module": "es2022",
     "esModuleInterop": true,
     "noImplicitAny": false,
-    "moduleResolution": "node",
+    "moduleResolution": "nodenext",
   },
 
   "files": [
