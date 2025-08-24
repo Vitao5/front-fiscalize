@@ -1,12 +1,9 @@
 import {
   AngularNodeAppEngine,
   createNodeRequestHandler,
-  isMainModule,
   writeResponseToNodeResponse,
 } from '@angular/ssr/node';
 import express from 'express';
-import { fileURLToPath } from 'node:url';
-import { dirname, join } from 'node:path';
 import { AddressInfo } from 'node:net';
 
 const browserDistFolder = '/app/dist/front-fiscalize';
@@ -38,7 +35,7 @@ process.on('unhandledRejection', err => {
   console.error('Unhandled Rejection:', err);
 });
 
-// Inicia o servidor incondicionalmente
+// Inicia o servidor
 const port = Number(process.env['PORT']) || 4000;
 
 const server = app.listen(port, '0.0.0.0', (error?: Error) => {
@@ -48,5 +45,4 @@ const server = app.listen(port, '0.0.0.0', (error?: Error) => {
   const { address, port } = server.address() as AddressInfo;
   console.log(`Node Express server listening on http://${address}:${port}`);
 });
-console.log("Servidor iniciado...");
 export const reqHandler = createNodeRequestHandler(app);
