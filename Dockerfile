@@ -9,6 +9,16 @@ COPY . .
 RUN npm install
 RUN npm run build:ssr:hml
 
+# --- DEPURACAO ---
+# Lista os arquivos no diretório do servidor para depuração
+RUN echo "--- Listando arquivos do servidor ---"
+RUN ls -la dist/front-fiscalize/server
+
+# Mostra o conteúdo do arquivo de inicialização
+RUN echo "--- Conteúdo do main.js ---"
+RUN cat dist/front-fiscalize/server/main.js
+# --- FIM DA DEPURACAO ---
+
 # Estágio de execução
 FROM node:20-alpine
 
