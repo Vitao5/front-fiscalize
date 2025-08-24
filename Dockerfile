@@ -22,5 +22,5 @@ COPY --from=build /app/package-lock.json ./package-lock.json
 # Instala as dependências de execução
 RUN npm ci --omit=dev
 
-# Comando de inicialização para depuração do ambiente
-CMD ["env"]
+# Comando de inicialização
+CMD ["node", "dist/front-fiscalize/server/main.js"]
