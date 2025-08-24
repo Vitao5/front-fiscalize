@@ -4,9 +4,15 @@ import {
   writeResponseToNodeResponse,
 } from '@angular/ssr/node';
 import express from 'express';
+import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
 import { AddressInfo } from 'node:net';
 
-const browserDistFolder = '/app/dist/front-fiscalize';
+// Recreate __dirname for ES Modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const browserDistFolder = join(__dirname, '..', 'browser');
 
 const app = express();
 const angularApp = new AngularNodeAppEngine();
