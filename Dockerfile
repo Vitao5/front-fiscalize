@@ -9,7 +9,8 @@ COPY . .
 RUN npm install
 RUN npm run build:ssr:hml
 
-# Estágio de execução
+# Lista os arquivos no diretório do servidor para depuração
+RUN ls -la dist/front-fiscalize/server
 FROM node:20-alpine
 
 WORKDIR /app
