@@ -23,4 +23,4 @@ COPY --from=build /app/package-lock.json ./package-lock.json
 RUN npm ci --omit=dev
 
 # Comando de inicialização
-CMD ["node", "dist/front-fiscalize/server/main.js"]
+CMD ["node", "--trace-warnings", "--enable-source-maps", "dist/front-fiscalize/server/main.js"]
