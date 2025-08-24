@@ -35,7 +35,10 @@ app.use((req, res, next) => {
 });
 
 // Health check endpoint for Render
-app.get('/healthz', (req, res) => res.status(200).send('OK'));
+app.get('/healthz', (req, res) => {
+  console.log('Health check endpoint accessed');
+  res.status(200).send('OK');
+});
 
 process.on('uncaughtException', err => {
   console.error('Uncaught Exception:', err);
@@ -44,14 +47,20 @@ process.on('unhandledRejection', err => {
   console.error('Unhandled Rejection:', err);
 });
 
-// Inicia o servidor
+// Start the server
 const port = Number(process.env['PORT']) || 4000;
 
 const server = app.listen(port, '0.0.0.0', (error?: Error) => {
   if (error) {
+    console.error('Error starting server:', error);
     throw error;
   }
   const { address, port } = server.address() as AddressInfo;
   console.log(`Node Express server listening on http://${address}:${port}`);
 });
+
+server.on('error', (err) => {
+  console.error('Server error:', err);
+});
+
 export const reqHandler = createNodeRequestHandler(app);
