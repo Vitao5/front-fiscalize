@@ -3,16 +3,14 @@ import {
   createNodeRequestHandler,
   writeResponseToNodeResponse,
 } from '@angular/ssr/node';
-import express from 'express';
-import { fileURLToPath } from 'node:url';
-import { dirname, join } from 'node:path';
+import express, { Request, Response, NextFunction } from 'express';
+import path from 'path';
 import { AddressInfo } from 'node:net';
 
-// Recreate __dirname for ES Modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+// Recreate __dirname for CommonJS
+const __dirname = path.dirname(__filename);
 
-const browserDistFolder = join(__dirname, '..', 'browser');
+const browserDistFolder = path.join(__dirname, '..', 'browser');
 
 const app = express();
 const angularApp = new AngularNodeAppEngine();
@@ -25,7 +23,7 @@ app.use(
   }),
 );
 
-app.use((req, res, next) => {
+app.use((req: Request, res: Response, next: NextFunction) => {
   angularApp
     .handle(req)
     .then((response) =>
@@ -35,15 +33,15 @@ app.use((req, res, next) => {
 });
 
 // Health check endpoint for Render
-app.get('/healthz', (req, res) => {
+app.get('/healthz', (req: Request, res: Response) => {
   console.log('Health check endpoint accessed');
   res.status(200).send('OK');
 });
 
-process.on('uncaughtException', err => {
+process.on('uncaughtException', (err: Error) => {
   console.error('Uncaught Exception:', err);
 });
-process.on('unhandledRejection', err => {
+process.on('unhandledRejection', (err: Error) => {
   console.error('Unhandled Rejection:', err);
 });
 
@@ -59,7 +57,7 @@ const server = app.listen(port, '0.0.0.0', (error?: Error) => {
   console.log(`Node Express server listening on http://${address}:${port}`);
 });
 
-server.on('error', (err) => {
+server.on('error', (err: Error) => {
   console.error('Server error:', err);
 });
 
