@@ -9,7 +9,8 @@
     "start:ssr": "node dist/front-fiscalize/server/main.js",
     "test": "ng test",
     "start": "npm run start:ssr",
-    "serve:ssr": "node dist/front-fiscalize/server/main.js"
+    "serve:ssr": "node dist/front-fiscalize/server/main.js",
+    "postinstall": "npm install --force"
   },
   "private": true,
   "dependencies": {
