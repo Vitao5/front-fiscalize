@@ -8,11 +8,11 @@
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "skipLibCheck": true,
+    "skipLibCheck": false,
     "isolatedModules": true,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true, // Added to support Angular decorators
-    "importHelpers": true,
+    "emitDecoratorMetadata": false, // Disabled as per the change request
+    "importHelpers": false,
     "target": "ES2017",
     "module": "commonjs", // Changed from nodenext to commonjs
     "esModuleInterop": true,
@@ -25,9 +25,6 @@
       ],
       "rxjs/*": [
         "node_modules/rxjs/*"
-      ],
-      "tslib": [
-        "node_modules/tslib/tslib.d.ts"
       ]
     }
   },
@@ -38,7 +35,10 @@
     "typeCheckHostBindings": true,
     "strictTemplates": true
   },
-  "files": [],
+  "include": [
+    "src/**/*.ts",
+    "node_modules/tslib/tslib.d.ts"
+  ],
   "references": [
     {
       "path": "./tsconfig.app.json"

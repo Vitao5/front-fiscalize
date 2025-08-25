@@ -1,4 +1,3 @@
-
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
@@ -21,6 +20,11 @@ export const routes: Routes = [
     path: 'home',
     loadComponent: () => import('./views/home/home.component').then(m => m.HomeComponent),
     title: 'Home',
+  },
+  {
+    path: 'user/:id',
+    loadComponent: () => import('./views/user/user.component').then(m => m.UserComponent),
+    title: 'User Profile'
   },
   {
     path: '**',

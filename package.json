@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "build": "ng build",
-    "build:ssr:hml": "ng build --configuration=homolog && webpack --config webpack.config.js && ng run front-fiscalize:server:homolog",
+    "build:ssr:hml": "ng build --configuration=homolog && ng run front-fiscalize:server:homolog",
     "build:ssr:prd": "ng build --configuration=production && webpack --config webpack.config.js && ng run front-fiscalize:server:production",
     "start:ssr": "node dist/front-fiscalize/server/main.js",
     "test": "ng test",
@@ -24,9 +24,10 @@
     "@angular/platform-browser-dynamic": "~20.1.6",
     "@angular/platform-server": "~20.1.6",
     "@angular/router": "~20.1.6",
+    "@nguniversal/express-engine": "^16.2.0",
     "axios": "^1.10.0",
     "dotenv": "^17.2.1",
-    "express": "^5.1.0",
+    "express": "^4.20.0",
     "moment": "^2.30.1",
     "ngx-mask": "^19.0.7",
     "ngx-toastr": "^19.0.0",
@@ -72,6 +73,7 @@
     "vite": "^7.0.4",
     "vite-plugin-angular": "^0.0.0",
     "vm-browserify": "^1.1.2",
+    "webpack": "^5.101.3",
     "webpack-cli": "^6.0.1",
     "webpack-node-externals": "^3.0.0"
   },
