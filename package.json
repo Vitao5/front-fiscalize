@@ -5,12 +5,10 @@
     "ng": "ng",
     "build": "ng build",
     "build:ssr:hml": "ng build --configuration=homolog && ng run front-fiscalize:server:homolog",
-    "build:ssr:prd": "ng build --configuration=production && webpack --config webpack.config.js && ng run front-fiscalize:server:production",
-    "start:ssr": "node dist/front-fiscalize/server/main.js",
+    "build:ssr:prd": "ng build --configuration=production && ng run front-fiscalize:server:production",
+    "start:ssr": "node dist/front-fiscalize/server/server.mjs",
     "test": "ng test",
-    "start": "npm run start:ssr",
-    "serve:ssr": "node dist/front-fiscalize/server/main.js",
-    "postinstall": "npm install --force"
+    "start": "npm run start:ssr"
   },
   "private": true,
   "dependencies": {
