@@ -8,18 +8,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { cadastraDespesaExtra, alteraDespesaExtra, deletaDespesa } from "./dashboard-action";
 
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
-const chartOptions = {
-  series: [44, 55, 13, 43],
-  options: {
-    chart: { type: 'pie' as const, background: 'transparent' },
-    colors: ["#22c55e", "#22c0c5", "#4a97de", "#a78bfa"],
-    labels: ['Fixas', 'Variáveis', 'Lazer', 'Outros'],
-    legend: { position: 'bottom' as const, labels: { colors: '#94a3b8' } },
-    dataLabels: { enabled: false },
-  },
-};
 
 const emptyForm = {
   purchaseName: "",
