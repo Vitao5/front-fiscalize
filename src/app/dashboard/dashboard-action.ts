@@ -1,28 +1,20 @@
 'use server';
 
-import { cookies } from 'next/headers';
+import { apiClient } from '@/lib/api-client';
+import { ApiResponse } from '@/lib/api-client';
 
-const API_BASE = 'http://127.0.0.1:3001/api';
 
-async function getToken() {
-  return (await cookies()).get('auth_token')?.value ?? '';
-}
-
-async function apiFetch(path: string, options: RequestInit = {}) {
-  const token = await getToken();
-  const res = await fetch(`${API_BASE}${path}`, {
-    ...options,
-    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`, ...options.headers },
-    cache: 'no-store',
-  });
-  if (!res.ok) throw new Error(`Erro ${res.status}: ${res.statusText}`);
-  return res.json();
+function getErrorMessage(response: ApiResponse): string {
+  if (response.status === 429) {
+    return 'Muitas requisições enviadas. Aguarde alguns instantes e tente novamente.';
+  }
+  return response.message ?? response.error ?? `Erro na requisição (status ${response.status})`;
 }
 
 export async function buscaDespesasExtras() {
   try {
-    const data = await apiFetch('/extra-purchase/list', { method: 'POST', body: JSON.stringify({}) });
-    return data.listFormatted ?? [];
+    const response = await apiClient.post('/extra-purchase/list', {});
+    return response.ok ? (response.data?.listFormatted ?? []) : [];
   } catch {
     return [];
   }
@@ -30,8 +22,8 @@ export async function buscaDespesasExtras() {
 
 export async function buscaFormasPagamento() {
   try {
-    const data = await apiFetch('/type-payments/list', { method: 'GET' });
-    return data.listaTipoPagamentos ?? [];
+    const response = await apiClient.get('/type-payments/list');
+    return response.ok ? (response.data?.listaTipoPagamentos ?? []) : [];
   } catch {
     return [];
   }
@@ -39,21 +31,61 @@ export async function buscaFormasPagamento() {
 
 export async function buscaBancos() {
   try {
-    const data = await apiFetch('/banks/list', { method: 'GET' });
-    return data.listaBancos ?? [];
+    const response = await apiClient.get('/banks/list');
+    return response.ok ? (response.data?.listaBancos ?? []) : [];
   } catch {
     return [];
   }
 }
 
 export async function cadastraDespesaExtra(despesa: any) {
-  return apiFetch('/extra-purchase/register', { method: 'POST', body: JSON.stringify([despesa]) });
+  const response = await apiClient.post('/extra-purchase/register', [despesa]);
+  if (!response.ok) throw new Error(getErrorMessage(response));
+  return response.data;
 }
 
 export async function alteraDespesaExtra(despesa: any) {
-  return apiFetch('/extra-purchase/update', { method: 'POST', body: JSON.stringify(despesa) });
+  const response = await apiClient.post('/extra-purchase/update', despesa);
+  if (!response.ok) throw new Error(getErrorMessage(response));
+  return response.data;
 }
 
 export async function deletaDespesa(id: string) {
-  return apiFetch('/extra-purchase/delete', { method: 'POST', body: JSON.stringify({ id }) });
+  const response = await apiClient.post('/extra-purchase/delete', { id });
+  if (!response.ok) throw new Error(getErrorMessage(response));
+  return response.data;
+}
+
+export async function cadastrarCompraParcelada(compra: any) {
+  const response = await apiClient.post('/installment-purchase/register', compra);
+  if (!response.ok) throw new Error(getErrorMessage(response));
+  return response.data;
+}
+
+export async function buscaComprasParceladas() {
+  try {
+    const response = await apiClient.post('/installment-purchase/list', {});
+    return response.ok ? (response.data?.listFormatted ?? response.data ?? []) : [];
+  } catch (err) {
+    console.error("ERRO BUSCA PARCELADAS:", err);
+    return [];
+  }
+}
+
+export async function alteraCompraParcelada(compra: any) {
+  const response = await apiClient.post('/installment-purchase/update', compra);
+  if (!response.ok) throw new Error(getErrorMessage(response));
+  return response.data;
+}
+
+export async function deletaCompraParcelada(id: string) {
+  const response = await apiClient.post('/installment-purchase/delete', { id });
+  if (!response.ok) throw new Error(getErrorMessage(response));
+  return response.data;
+}
+
+export async function deletaParcelaIndividual(id: number | string) {
+  const response = await apiClient.post('/installment-purchase/delete-installment', { id });
+  if (!response.ok) throw new Error(getErrorMessage(response));
+  return response.data;
 }

@@ -6,7 +6,7 @@ import { CirclePlus, DollarSign, Landmark, ShoppingCart, SquarePen, Trash2, Cale
 import dynamic from "next/dynamic";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { cadastraDespesaExtra, alteraDespesaExtra, deletaDespesa } from "./dashboard-action";
+import { cadastraDespesaExtra, alteraDespesaExtra, deletaDespesa, cadastrarCompraParcelada, alteraCompraParcelada, deletaCompraParcelada, deletaParcelaIndividual } from "./dashboard-action";
 
 
 
@@ -22,6 +22,7 @@ interface Props {
   initialDespesas: any[];
   initialFormasPagamento: any[];
   initialBancos: any[];
+  initialComprasParceladas?: any[];
   saldoTotal: number;
 }
 
@@ -59,17 +60,120 @@ const despesasFixasMock = [
   },
 ];
 
-export default function DashboardClient({ initialDespesas, initialFormasPagamento, initialBancos, saldoTotal }: Props) {
+export default function DashboardClient({ initialDespesas, initialFormasPagamento, initialBancos, initialComprasParceladas = [], saldoTotal }: Props) {
   const router = useRouter();
   const [despesas, setDespesas] = useState(initialDespesas);
+  const [comprasParceladas, setComprasParceladas] = useState(initialComprasParceladas);
+  const [endividamentoTotal, setEndividamentoTotal] = useState(0);
+  const [saldoTotalComprasParceladas, setSaldoTotalComprasParceladas] = useState(0);
   const [saving, setSaving] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingExpense, setEditingExpense] = useState<any | null>(null);
   const [formData, setFormData] = useState(emptyForm);
-  const [openAccordion, setOpenAccordion] = useState<number | null>(null);
+
+  const [isModalParceladaOpen, setIsModalParceladaOpen] = useState(false);
+  const [editingParcelada, setEditingParcelada] = useState<any | null>(null);
+  const [formParcelada, setFormParcelada] = useState({ description: "", quantityInstallments: "", installmentValue: "" });
+
+  const [openAccordion, setOpenAccordion] = useState<number | string | null>(null);
 
   useEffect(() => { setDespesas(initialDespesas); }, [initialDespesas]);
+  useEffect(() => { setComprasParceladas(initialComprasParceladas); }, [initialComprasParceladas]);
+
+  useEffect(() => {
+    // Soma total restante das compras parceladas (parcelas ainda existentes no banco)
+    const totalParceladas = comprasParceladas.reduce((sum: number, compra: any) => {
+      const parcelas = compra.installments || [];
+      const totalCompra = parcelas.reduce((s: number, p: any) => s + parseFloat(p.installmentValue || 0), 0);
+      return sum + totalCompra;
+    }, 0);
+
+    // Soma total dos gastos do mês
+    const totalGastosMes = despesas.reduce((sum: number, d: any) => sum + parseFloat(d.purchaseValue || 0), 0);
+
+    setEndividamentoTotal(totalParceladas + totalGastosMes);
+    setSaldoTotalComprasParceladas(totalParceladas)
+  }, [comprasParceladas, despesas]);
+
+  const abrirModalCadastroParcelada = () => {
+    setEditingParcelada(null);
+    setFormParcelada({ description: "", quantityInstallments: "", installmentValue: "" });
+    setErrorMsg("");
+    setIsModalParceladaOpen(true);
+  };
+
+  const abrirModalEdicaoParcelada = (compra: any) => {
+    setEditingParcelada(compra);
+    setFormParcelada({
+      description: compra.description || "",
+      quantityInstallments: String(compra.quantityInstallments || ""),
+      installmentValue: String(compra.installmentValue || ""),
+    });
+    setErrorMsg("");
+    setIsModalParceladaOpen(true);
+  };
+
+  const salvarCompraParceladaAsync = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorMsg("");
+
+    if (!formParcelada.description.trim() || !formParcelada.quantityInstallments || !formParcelada.installmentValue) {
+      setErrorMsg("Por favor, preencha todos os campos obrigatórios.");
+      return;
+    }
+
+    const valorNumerico = parseFloat(formParcelada.installmentValue.replace(",", "."));
+    const qtdeParcelas = parseInt(formParcelada.quantityInstallments, 10);
+
+    if (isNaN(valorNumerico) || valorNumerico <= 0 || isNaN(qtdeParcelas) || qtdeParcelas <= 0) {
+      setErrorMsg("Por favor, insira valores válidos e maiores que zero.");
+      return;
+    }
+
+    setSaving(true);
+    try {
+      const payload = {
+        description: formParcelada.description,
+        quantityInstallments: qtdeParcelas,
+        installmentValue: valorNumerico,
+      };
+
+      if (editingParcelada) {
+        await alteraCompraParcelada({ ...payload, id: editingParcelada.id });
+      } else {
+        await cadastrarCompraParcelada(payload);
+      }
+
+      setIsModalParceladaOpen(false);
+      router.refresh();
+    } catch (error: any) {
+      setErrorMsg(error.message || "Ocorreu um erro ao salvar a compra parcelada. Tente novamente.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const deletarCompraParceladaAsync = async (id: string) => {
+
+    try {
+      await deletaCompraParcelada(id);
+      router.refresh();
+    } catch (error) {
+      console.error("Erro ao deletar:", error);
+    }
+  };
+
+  const deletarParcelaIndividualAsync = async (installmentId: number | string) => {
+
+    try {
+      await deletaParcelaIndividual(installmentId);
+      router.refresh();
+    } catch (error) {
+      console.error("Erro ao deletar parcela:", error);
+    }
+  };
 
   const getOpcoesPagamento = () =>
     initialFormasPagamento.length > 0
@@ -94,30 +198,6 @@ export default function DashboardClient({ initialDespesas, initialFormasPagament
         { value: "Outros", label: "Outros" },
       ];
 
-  const abrirModalCadastro = () => {
-    setEditingExpense(null);
-    setFormData(emptyForm);
-    setErrorMsg("");
-    setIsModalOpen(true);
-  };
-
-  const abrirModalEdicao = (expense: any) => {
-    setEditingExpense(expense);
-    let formattedDate = new Date().toISOString().split('T')[0];
-    if (expense.purchaseDate) {
-      const parts = expense.purchaseDate.split('/');
-      if (parts.length === 3) formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
-    }
-    setFormData({
-      purchaseName: expense.purchaseName || "",
-      purchaseValue: String(expense.purchaseValue || ""),
-      bankName: expense.bankName || "",
-      purchaseTypePayment: expense.purchaseTypePayment || "",
-      purchaseDate: formattedDate,
-    });
-    setErrorMsg("");
-    setIsModalOpen(true);
-  };
 
   const salvarDespesaAsync = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -180,7 +260,7 @@ export default function DashboardClient({ initialDespesas, initialFormasPagament
       <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
         <DashboardCard
           title="Compras parceladas"
-          value={formatBRL(saldoTotal)}
+          value={formatBRL(saldoTotalComprasParceladas)}
           icon={<Landmark size={20} />}
           backgroundClass="bg-red-500/20 text-red-400"
         />
@@ -198,7 +278,7 @@ export default function DashboardClient({ initialDespesas, initialFormasPagament
         />
         <DashboardCard
           title="Endividamento total"
-          value={formatBRL(saldoTotal)}
+          value={formatBRL(endividamentoTotal)}
           icon={<Landmark size={20} />}
           backgroundClass="bg-red-500/20 text-red-400"
         />
@@ -206,7 +286,7 @@ export default function DashboardClient({ initialDespesas, initialFormasPagament
 
 
       <div className="w-full">
-        <div className="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-2 gap-5 mb-10">
+        <div className="grid grid-cols-1  md:grid-cols-1 xl:grid-cols-2 gap-5 mb-10">
 
 
           <div>
@@ -215,9 +295,10 @@ export default function DashboardClient({ initialDespesas, initialFormasPagament
                 <div>
                   <h2 className="text-base font-bold text-white">Gastos do mês</h2>
                 </div>
+
                 <button className="flex items-center gap-1.5 text-sm font-semibold text-white bg-primary-700 hover:bg-primary-600 px-3.5 py-2 rounded-lg transition-all">
                   <CirclePlus size={15} />
-                  Adicionar
+                  {window.innerWidth < 768 ? "" : "Adicionar"}
                 </button>
               </div>
 
@@ -287,50 +368,70 @@ export default function DashboardClient({ initialDespesas, initialFormasPagament
               <div>
                 <h2 className="text-base font-bold text-white">Compras Parceladas</h2>
               </div>
-              <button className="flex items-center gap-1.5 text-sm font-semibold text-white bg-primary-700 hover:bg-primary-600 px-3.5 py-2 rounded-lg transition-all">
+              <button onClick={abrirModalCadastroParcelada} className="flex items-center gap-1.5 text-sm font-semibold text-white bg-primary-700 hover:bg-primary-600 px-3.5 py-2 rounded-lg transition-all">
                 <CirclePlus size={15} />
                 Adicionar
               </button>
             </div>
 
             <div className="p-4 space-y-2">
-              {despesasFixasMock.map((despesa) => {
-                const isOpen = openAccordion === despesa.id;
+              {comprasParceladas.length === 0 ? (
+                <div className="text-slate-400 text-sm text-center py-4">Nenhuma compra parcelada cadastrada.</div>
+              ) : comprasParceladas.map((compra) => {
+                const isOpen = openAccordion === compra.id;
+
+
+                const parcelasArray = compra.installments || [];
+                const parcelasAtivas = parcelasArray.length;
+
+                let total = 0;
+                parcelasArray.forEach((p: any) => {
+                  total += parseFloat(p.installmentValue || 0);
+                });
+
                 return (
-                  <div key={despesa.id} className="rounded-lg border border-slate-700/50 overflow-hidden">
-                    <button
-                      onClick={() => setOpenAccordion(isOpen ? null : despesa.id)}
-                      className="w-full flex items-center justify-between px-4 py-3 bg-slate-800 hover:bg-slate-700/60 transition-colors"
-                    >
-                      <span className="font-semibold text-slate-200 text-sm">{despesa.nome}</span>
-                      <div className="flex items-center gap-3">
-                        <span className="text-sm font-bold text-white">
-                          {despesa.totalDevido.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-                        </span>
+                  <div key={compra.id} className="rounded-lg border border-slate-700/50 overflow-hidden">
+                    <div className="w-full flex items-center justify-between px-4 py-3 bg-slate-800 hover:bg-slate-700/60 transition-colors">
+                      <button
+                        onClick={() => setOpenAccordion(isOpen ? null : compra.id)}
+                        className="flex-1 text-left flex items-center gap-2"
+                      >
+                        <span className="font-semibold text-slate-200 text-sm">{compra.description || "Sem descrição"}</span>
                         <ChevronDown
                           size={16}
                           className={`text-slate-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
                         />
+                      </button>
+                      <div className="flex items-center gap-4">
+                        <span className="text-sm font-bold text-white">
+                          {total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                        </span>
+                        <div className="flex gap-1">
+                          <button onClick={() => abrirModalEdicaoParcelada(compra)} className="text-slate-400 hover:text-primary-400 transition-colors p-1.5 rounded hover:bg-primary-500/10">
+                            <SquarePen size={20} />
+                          </button>
+                          <button onClick={() => deletarCompraParceladaAsync(compra.id)} className="text-slate-400 hover:text-red-400 transition-colors p-1.5 rounded hover:bg-red-500/10">
+                            <Trash2 size={20} />
+                          </button>
+                        </div>
                       </div>
-                    </button>
+                    </div>
 
                     {isOpen && (
                       <div className="border-t border-slate-700/50">
-                        <div className="grid grid-cols-3 px-4 py-2 bg-slate-900/60 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                        <div className="grid grid-cols-2 px-4 py-2 bg-slate-900/60 text-xs font-semibold text-slate-500 uppercase tracking-wider">
                           <span>Parcela</span>
-                          <span className="text-center">Mês</span>
-                          <span className="text-right">Valor</span>
+                          <span className="text-right">Ação / Valor</span>
                         </div>
                         <div className="divide-y divide-slate-700/40">
-                          {despesa.parcelas.map((parcela) => (
-                            <div key={parcela.numero} className="grid grid-cols-3 items-center px-4 py-2.5 hover:bg-slate-700/30 transition-colors">
-                              <span className="text-sm text-slate-400 font-medium">#{parcela.numero}</span>
-                              <span className="text-sm text-slate-300 text-center">{parcela.mes}</span>
+                          {parcelasArray.map((parcela: any) => (
+                            <div key={parcela.id} className="grid grid-cols-2 items-center px-4 py-2.5 hover:bg-slate-700/30 transition-colors">
+                              <span className="text-sm text-slate-400 font-medium">{parcela.installmentNumber} de {compra.quantityInstallments}</span>
                               <div className="flex items-center justify-end gap-3">
                                 <span className="text-sm font-semibold text-white">
-                                  {parcela.valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                                  {(parcela.installmentValue || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                                 </span>
-                                <button className="text-slate-600 hover:text-red-400 transition-colors p-1 rounded hover:bg-red-500/10">
+                                <button onClick={() => deletarParcelaIndividualAsync(parcela.id)} className="text-slate-600 hover:text-red-400 transition-colors p-1 rounded hover:bg-red-500/10">
                                   <Trash2 size={13} />
                                 </button>
                               </div>
@@ -349,6 +450,59 @@ export default function DashboardClient({ initialDespesas, initialFormasPagament
 
 
       </div>
+
+      <Modal show={isModalParceladaOpen} onClose={() => setIsModalParceladaOpen(false)} size="md" className="w-100 flex justify-center" popup root={typeof window !== 'undefined' ? document.body : undefined}>
+        <ModalBody className="p-6 bg-slate-800 rounded-xl border border-slate-700 ">
+          <div className="space-y-5">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-700">
+              <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                {editingParcelada ? <><SquarePen className="text-primary-400" size={20} /> Editar Compra Parcelada</> : <><CirclePlus className="text-primary-400" size={20} /> Nova Compra Parcelada</>}
+              </h3>
+              <button type="button" onClick={() => setIsModalParceladaOpen(false)} className="text-slate-400 hover:text-white transition-colors p-1 rounded-lg hover:bg-slate-700">
+                <X size={18} />
+              </button>
+            </div>
+
+            <form onSubmit={salvarCompraParceladaAsync} className="space-y-4">
+              {errorMsg && (
+                <div className="p-3 text-sm text-red-300 rounded-lg bg-red-500/10 border border-red-500/30 flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-400 shrink-0" />
+                  {errorMsg}
+                </div>
+              )}
+
+              <div className="space-y-1.5">
+                <Label htmlFor="description" className="font-semibold text-slate-300 text-sm flex items-center gap-1.5">
+                  <FileText size={14} className="text-slate-400" /> Descrição *
+                </Label>
+                <TextInput id="description" placeholder="Ex: Carro, Celular, Geladeira" value={formParcelada.description} onChange={(e) => setFormParcelada({ ...formParcelada, description: e.target.value })} required className="[&_input]:bg-slate-900 [&_input]:border-slate-600 [&_input]:text-white [&_input]:placeholder-slate-500 [&_input]:focus:border-primary-500" />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1.5">
+                  <Label htmlFor="quantityInstallments" className="font-semibold text-slate-300 text-sm flex items-center gap-1.5">
+                    <Calendar size={14} className="text-slate-400" /> Qtd. Parcelas *
+                  </Label>
+                  <TextInput id="quantityInstallments" type="number" min="1" placeholder="Ex: 12" value={formParcelada.quantityInstallments} onChange={(e) => setFormParcelada({ ...formParcelada, quantityInstallments: e.target.value })} required className="[&_input]:bg-slate-900 [&_input]:border-slate-600 [&_input]:text-white [&_input]:placeholder-slate-500 [&_input]:focus:border-primary-500" />
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="installmentValue" className="font-semibold text-slate-300 text-sm flex items-center gap-1.5">
+                    <DollarSign size={14} className="text-slate-400" /> Valor da Parcela *
+                  </Label>
+                  <TextInput id="installmentValue" type="text" placeholder="0,00" value={formParcelada.installmentValue} onChange={(e) => setFormParcelada({ ...formParcelada, installmentValue: e.target.value })} required className="[&_input]:bg-slate-900 [&_input]:border-slate-600 [&_input]:text-white [&_input]:placeholder-slate-500 [&_input]:focus:border-primary-500" />
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-3 pt-2 border-t border-slate-700">
+                <Button type="button" color="gray" onClick={() => setIsModalParceladaOpen(false)} disabled={saving} className="font-medium bg-slate-700 text-slate-200 border-slate-600 hover:bg-slate-600">Cancelar</Button>
+                <Button type="submit" disabled={saving} className="bg-primary-700 hover:bg-primary-600 text-white font-bold px-4 border-0">
+                  {saving ? <><Spinner size="sm" className="mr-2" /> Salvando...</> : <><CheckCircle2 size={15} className="mr-2" /> Salvar</>}
+                </Button>
+              </div>
+            </form>
+          </div>
+        </ModalBody>
+      </Modal>
 
       <Modal show={isModalOpen} onClose={() => setIsModalOpen(false)} size="md" popup root={typeof window !== 'undefined' ? document.body : undefined}>
         <ModalBody className="p-6 bg-slate-800 rounded-xl border border-slate-700">

@@ -39,8 +39,8 @@ export default function LoginPage() {
           className="w-full rounded-2xl p-8 shadow-2xl"
           style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", backdropFilter: "blur(20px)" }}
         >
-          <h1 className="text-2xl font-bold text-white mb-1">Bem-vindo de volta</h1>
-          <p className="text-sm text-gray-400 mb-7">Entre na sua conta para continuar</p>
+          <h1 className="text-2xl font-bold text-white mb-3">Bem-vindo de volta</h1>
+          <p className="text-sm font-bold text-white mb-7">Entre na sua conta para continuar</p>
 
           <form className="space-y-5" action={formAction}>
             {!state.sucess && state.message.length > 0 && (
@@ -51,7 +51,7 @@ export default function LoginPage() {
             )}
 
             <div className="space-y-1.5">
-              <label htmlFor="email" className="block text-sm font-medium text-gray-300">E-mail</label>
+              <label htmlFor="email" className="block text-sm font-medium text-white">E-mail</label>
               <input
                 type="email" name="email" id="email"
                 placeholder="email@exemplo.com"
@@ -62,7 +62,7 @@ export default function LoginPage() {
             </div>
 
             <div className="space-y-1.5">
-              <label htmlFor="password" className="block text-sm font-medium text-gray-300">Senha</label>
+              <label htmlFor="password" className="block text-sm font-medium text-white">Senha</label>
               <input
                 type="password" name="password" id="password"
                 placeholder="••••••••"
@@ -73,8 +73,8 @@ export default function LoginPage() {
             </div>
 
             <div className="text-right">
-              <Link href="#" className="text-sm text-primary-400 hover:text-primary-300 transition-colors">
-                Esqueceu sua senha?
+              <Link href="/reset-password" className="text-sm text-primary-400 hover:text-primary-300 transition-colors">
+                Esqueci a senha
               </Link>
             </div>
 

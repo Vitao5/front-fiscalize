@@ -1,16 +1,17 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { buscaDespesasExtras, buscaFormasPagamento, buscaBancos } from './dashboard-action';
+import { buscaDespesasExtras, buscaFormasPagamento, buscaBancos, buscaComprasParceladas } from './dashboard-action';
 import DashboardClient from './dashboard-client';
 
 export default async function DashboardPage() {
   const token = (await cookies()).get('auth_token')?.value;
   if (!token) redirect('/login');
 
-  const [despesas, formasPagamento, bancos] = await Promise.all([
+  const [despesas, formasPagamento, bancos, comprasParceladas] = await Promise.all([
     buscaDespesasExtras(),
     buscaFormasPagamento(),
     buscaBancos(),
+    buscaComprasParceladas()
   ]);
 
   const saldoTotal = despesas.reduce(
@@ -23,6 +24,7 @@ export default async function DashboardPage() {
       initialDespesas={despesas}
       initialFormasPagamento={formasPagamento}
       initialBancos={bancos}
+      initialComprasParceladas={comprasParceladas}
       saldoTotal={saldoTotal}
     />
   );

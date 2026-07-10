@@ -10,132 +10,111 @@ export default function RegisterPage() {
 
   const [state, formAction] = useActionState(registrarUsuario, { message: "", sucess: false });
   return (
-    <section className="bg-gray-50 dark:bg-gray-900 min-h-screen w-full flex items-center justify-center">
-      <div className="flex flex-col items-center justify-center px-4 mx-auto w-full max-w-[450px]">
-        <Link
-          href="#"
-          className="flex items-center mb-6 text-2xl font-bold text-primary-800 dark:text-white"
-        >
-          <img
-            className="w-8 h-8 mr-2"
-            src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
-            alt="logo"
-          />
-          Fiscalize Finanças
+    <section
+      className="min-h-screen w-full flex items-center justify-center"
+      style={{ background: "linear-gradient(135deg, #0f172a 0%, #1a2e1a 50%, #0f2a0f 100%)" }}
+    >
+      <div className="pointer-events-none fixed inset-0 overflow-hidden">
+        <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full opacity-20" style={{ background: "radial-gradient(circle, #22c55e, transparent 70%)" }} />
+        <div className="absolute -bottom-32 -right-32 w-96 h-96 rounded-full opacity-15" style={{ background: "radial-gradient(circle, #16a34a, transparent 70%)" }} />
+      </div>
+
+      <div className="relative flex flex-col items-center px-4 w-full max-w-[440px]">
+        <Link href="#" className="flex items-center mb-8 gap-2">
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: "linear-gradient(135deg, #22c55e, #16a34a)" }}>
+            <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <span className="text-2xl font-bold text-white tracking-tight">Fiscalize <span className="text-primary-400">Finanças</span></span>
         </Link>
 
-        <div className="w-full bg-white rounded-lg shadow border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-              Crie sua conta para gerenciar suas finanças
-            </h1>
+        <div
+          className="w-full rounded-2xl p-8 shadow-2xl"
+          style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", backdropFilter: "blur(20px)" }}
+        >
+          <h1 className="text-2xl font-bold text-white mb-1">Crie sua conta</h1>
+          <p className="text-sm text-gray-400 mb-7">Preencha os dados para começar a gerenciar suas finanças</p>
 
-            <form className="space-y-4 md:space-y-6" action={formAction}>
-              <span className={state && !state.sucess && state.message.length != 0 ? 'text-white font-semibold bg-red-500 rounded-lg py-3 flex items-center justify-center ' : 'hidden'}>{state?.message}</span>
-
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
-                >
-                  Nome
-                </label>
-                <input
-                  type="name"
-                  name="name"
-                  id="name"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-700 focus:border-primary-700 block w-full p-2.5 outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  placeholder="ex: Victor Gabriel"
-                  required
-                />
+          <form className="space-y-5" action={formAction}>
+            {!state.sucess && state.message.length > 0 && (
+              <div className="flex items-center gap-2 bg-red-500/20 border border-red-500/40 text-red-300 text-sm font-medium rounded-xl px-4 py-3">
+                <svg className="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" /></svg>
+                {state.message}
               </div>
+            )}
 
+            <div className="space-y-1.5">
+              <label htmlFor="name" className="block text-sm font-medium text-gray-300">Nome</label>
+              <input
+                type="text" name="name" id="name"
+                placeholder="ex: Victor Gabriel"
+                required
+                className="w-full px-4 py-3 rounded-xl text-white placeholder-gray-500 text-sm outline-none transition-all focus:ring-2 focus:ring-primary-500"
+                style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)" }}
+              />
+            </div>
 
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
-                >
-                  E-mail
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  id="email"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-700 focus:border-primary-700 block w-full p-2.5 outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  placeholder="email@exemplo.com"
-                  required
-                />
-              </div>
+            <div className="space-y-1.5">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-300">E-mail</label>
+              <input
+                type="email" name="email" id="email"
+                placeholder="email@exemplo.com"
+                required
+                className="w-full px-4 py-3 rounded-xl text-white placeholder-gray-500 text-sm outline-none transition-all focus:ring-2 focus:ring-primary-500"
+                style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)" }}
+              />
+            </div>
 
-              <div>
-                <label
-                  htmlFor="phone"
-                  className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
-                >
-                  Celular
-                </label>
-                <PatternFormat
-                  name='phone'
-                  id="phone"
-                  format="(##) # ####-####"
-                  mask="_"
-                  placeholder="(34) 9 9999-9999"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-700 focus:border-primary-700 block w-full p-2.5 outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+            <div className="space-y-1.5">
+              <label htmlFor="phone" className="block text-sm font-medium text-gray-300">Celular</label>
+              <PatternFormat
+                name="phone" id="phone"
+                format="(##) # ####-####"
+                mask="_"
+                placeholder="(34) 9 9999-9999"
+                className="w-full px-4 py-3 rounded-xl text-white placeholder-gray-500 text-sm outline-none transition-all focus:ring-2 focus:ring-primary-500"
+                style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)" }}
+              />
+            </div>
 
-                />
-              </div>
+            <div className="space-y-1.5">
+              <label htmlFor="password" className="block text-sm font-medium text-gray-300">Senha</label>
+              <input
+                type="password" name="password" id="password"
+                placeholder="••••••••"
+                required
+                className="w-full px-4 py-3 rounded-xl text-white placeholder-gray-500 text-sm outline-none transition-all focus:ring-2 focus:ring-primary-500"
+                style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)" }}
+              />
+            </div>
 
-              <div>
-                <label
-                  htmlFor="password"
-                  className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
-                >
-                  Senha
-                </label>
-                <input
-                  type="password"
-                  name="password"
-                  id="password"
-                  placeholder="********"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-700 focus:border-primary-700 block w-full p-2.5 outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  required
-                />
-              </div>
+            <div className="space-y-1.5">
+              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-300">Confirme a Senha</label>
+              <input
+                type="password" name="confirmPassword" id="confirmPassword"
+                placeholder="••••••••"
+                required
+                className="w-full px-4 py-3 rounded-xl text-white placeholder-gray-500 text-sm outline-none transition-all focus:ring-2 focus:ring-primary-500"
+                style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)" }}
+              />
+            </div>
 
-              <div>
-                <label
-                  htmlFor="confirmPassword"
-                  className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
-                >
-                  Confirme a Senha
-                </label>
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  id="confirmPassword"
-                  placeholder="********"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-700 focus:border-primary-700 block w-full p-2.5 outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  required
-                />
-              </div>
-              <button
-                type="submit"
-                className="w-full text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg px-5 py-2.5 text-center transition-colors dark:bg-primary-600 dark:hover:bg-primary-700"
-              >
-                Cadastrar
-              </button>
+            <button
+              type="submit"
+              className="w-full py-3 px-5 rounded-xl font-bold text-white text-sm transition-all hover:opacity-90 hover:scale-[1.01] active:scale-[0.99] shadow-lg"
+              style={{ background: "linear-gradient(135deg, #22c55e, #16a34a)", boxShadow: "0 4px 24px rgba(34,197,94,0.3)" }}
+            >
+              Cadastrar
+            </button>
 
-              <p className="text-sm font-light text-gray-500 dark:text-gray-400 text-center">
-                <Link
-                  href="/login"
-                  className="font-medium text-primary-700 hover:underline dark:text-primary-400"
-                >
-                  Fazer login
-                </Link>
-              </p>
-            </form>
-          </div>
+            <p className="text-sm text-gray-400 text-center pt-1">
+              Já tem uma conta?{" "}
+              <Link href="/login" className="font-semibold text-primary-400 hover:text-primary-300 transition-colors">
+                Fazer login
+              </Link>
+            </p>
+          </form>
         </div>
       </div>
     </section>

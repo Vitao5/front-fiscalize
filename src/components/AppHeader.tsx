@@ -5,7 +5,6 @@ import Link from "next/link";
 import React, { useState, useEffect, useRef } from "react";
 
 const AppHeader: React.FC = () => {
-  const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
   const { isMobileOpen, toggleSidebar, toggleMobileSidebar } = useSidebar();
 
   const handleToggle = () => {

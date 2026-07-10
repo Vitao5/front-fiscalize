@@ -1,8 +1,7 @@
 'use server'
 
 import { cookies } from 'next/headers'
-
-const API_BASE = 'http://127.0.0.1:3001/api'
+import { apiClient } from '@/lib/api-client'
 
 export async function realizarLogin(message: any, formData: FormData) {
   const email = String(formData.get('email') ?? '').trim()
@@ -12,50 +11,39 @@ export async function realizarLogin(message: any, formData: FormData) {
     return { message: 'Campos inválidos', sucess: false }
   }
 
-  try {
-    const response = await fetch(`${API_BASE}/users/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
-      cache: 'no-store',
-    })
+  const response = await apiClient.post('/users/login', { email, password })
 
-    const data = await response.json().catch(() => ({}))
-
-    if (!response.ok) {
-      return {
-        message: data.message ?? 'Erro ao fazer login.',
-        sucess: false,
-      }
-    }
-
-    if (!data.token) {
-      return {
-        message: 'A API não retornou um token de autenticação.',
-        sucess: false,
-      }
-    }
-
-    const cookieStore = await cookies()
-    cookieStore.set('auth_token', data.token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 60 * 60 * 24,
-      path: '/',
-    })
-
+  if (!response.ok) {
     return {
-      message: data.message ?? 'Login realizado com sucesso',
-      sucess: true,
-      user: {
-        name: data.name,
-        email: data.email,
-        admin: data.userRoot,
-        token: data.token,
-      },
+      message: response.message ?? 'Erro ao fazer login.',
+      sucess: false,
     }
-  } catch {
-    return { message: 'Erro ao fazer login.', sucess: false }
+  }
+
+  if (!response.data?.token) {
+    return {
+      message: 'A API não retornou um token de autenticação.',
+      sucess: false,
+    }
+  }
+
+  const cookieStore = await cookies()
+  cookieStore.set('auth_token', response.data.token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    maxAge: 60 * 60 * 24,
+    path: '/',
+  })
+
+  return {
+    message: response.message ?? 'Login realizado com sucesso',
+    sucess: true,
+    user: {
+      name: response.data.name,
+      email: response.data.email,
+      admin: response.data.userRoot,
+      token: response.data.token,
+    },
   }
 }
