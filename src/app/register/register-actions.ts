@@ -8,11 +8,8 @@ export async function registrarUsuario(message: any, formData: FormData) {
   const email = String(formData.get('email') ?? '').trim()
   const password = String(formData.get('password') ?? '').trim()
   const phone = String(formData.get('phone') ?? '').trim()
-  const confirmPassword = String(formData.get('confirmPassword') ?? '').trim()
 
-  if (password !== confirmPassword) {
-    return { message: 'As senhas não coincidem.', sucess: false }
-  }
+
 
   const response = await apiClient.post('/users/register', {
     name,

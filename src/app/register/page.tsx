@@ -89,16 +89,6 @@ export default function RegisterPage() {
               />
             </div>
 
-            <div className="space-y-1.5">
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-300">Confirme a Senha</label>
-              <input
-                type="password" name="confirmPassword" id="confirmPassword"
-                placeholder="••••••••"
-                required
-                className="w-full px-4 py-3 rounded-xl text-white placeholder-gray-500 text-sm outline-none transition-all focus:ring-2 focus:ring-primary-500"
-                style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)" }}
-              />
-            </div>
 
             <button
               type="submit"

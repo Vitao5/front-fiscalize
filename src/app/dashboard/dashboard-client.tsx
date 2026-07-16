@@ -1,12 +1,13 @@
 "use client";
 
 import { DashboardCard } from "@/components/DashboardCard";
-import { Button, Modal, ModalBody, Label, TextInput, Select, Spinner } from "flowbite-react";
-import { CirclePlus, DollarSign, Landmark, ShoppingCart, SquarePen, Trash2, Calendar, FileText, CheckCircle2, X, ChevronDown } from "lucide-react";
-import dynamic from "next/dynamic";
+import { ModalDespesa } from "@/components/ModalDespesa";
+import { ModalCompraParcelada } from "@/components/ModalCompraParcelada";
+import { CirclePlus, DollarSign, Landmark, ShoppingCart, SquarePen, Trash2, ChevronDown, Calendar } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { cadastraDespesaExtra, alteraDespesaExtra, deletaDespesa, cadastrarCompraParcelada, alteraCompraParcelada, deletaCompraParcelada, deletaParcelaIndividual } from "./dashboard-action";
+import { parseBRLToFloat } from "@/comum-functions";
 
 
 
@@ -124,7 +125,7 @@ export default function DashboardClient({ initialDespesas, initialFormasPagament
       return;
     }
 
-    const valorNumerico = parseFloat(formParcelada.installmentValue.replace(",", "."));
+    const valorNumerico = parseBRLToFloat(formParcelada.installmentValue);
     const qtdeParcelas = parseInt(formParcelada.quantityInstallments, 10);
 
     if (isNaN(valorNumerico) || valorNumerico <= 0 || isNaN(qtdeParcelas) || qtdeParcelas <= 0) {
@@ -257,7 +258,7 @@ export default function DashboardClient({ initialDespesas, initialFormasPagament
     <div className="space-y-6 lg:ml-[60px]">
 
 
-      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+      <div className="flex justify-between">
         <DashboardCard
           title="Compras parceladas"
           value={formatBRL(saldoTotalComprasParceladas)}
@@ -270,6 +271,13 @@ export default function DashboardClient({ initialDespesas, initialFormasPagament
           icon={<DollarSign size={20} />}
           backgroundClass="bg-primary-500/20 text-primary-400"
         />
+        <DashboardCard
+          title="Gastos próximos mês"
+          value={formatBRL(saldoTotal)}
+          icon={<Calendar size={20} />}
+          backgroundClass="bg-red-500/20 text-red-400"
+        />
+
         <DashboardCard
           title="Gastos fixos"
           value="R$ 1.250,50"
@@ -381,8 +389,7 @@ export default function DashboardClient({ initialDespesas, initialFormasPagament
                 const isOpen = openAccordion === compra.id;
 
 
-                const parcelasArray = compra.installments || [];
-                const parcelasAtivas = parcelasArray.length;
+                const parcelasArray = compra.installments.reverse() || []
 
                 let total = 0;
                 parcelasArray.forEach((p: any) => {
@@ -451,131 +458,29 @@ export default function DashboardClient({ initialDespesas, initialFormasPagament
 
       </div>
 
-      <Modal show={isModalParceladaOpen} onClose={() => setIsModalParceladaOpen(false)} size="md" className="w-100 flex justify-center" popup root={typeof window !== 'undefined' ? document.body : undefined}>
-        <ModalBody className="p-6 bg-slate-800 rounded-xl border border-slate-700 ">
-          <div className="space-y-5">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-700">
-              <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                {editingParcelada ? <><SquarePen className="text-primary-400" size={20} /> Editar Compra Parcelada</> : <><CirclePlus className="text-primary-400" size={20} /> Nova Compra Parcelada</>}
-              </h3>
-              <button type="button" onClick={() => setIsModalParceladaOpen(false)} className="text-slate-400 hover:text-white transition-colors p-1 rounded-lg hover:bg-slate-700">
-                <X size={18} />
-              </button>
-            </div>
+      <ModalCompraParcelada
+        isOpen={isModalParceladaOpen}
+        onClose={() => setIsModalParceladaOpen(false)}
+        editingParcelada={editingParcelada}
+        formParcelada={formParcelada}
+        setFormParcelada={setFormParcelada}
+        onSubmit={salvarCompraParceladaAsync}
+        saving={saving}
+        errorMsg={errorMsg}
+      />
 
-            <form onSubmit={salvarCompraParceladaAsync} className="space-y-4">
-              {errorMsg && (
-                <div className="p-3 text-sm text-red-300 rounded-lg bg-red-500/10 border border-red-500/30 flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-red-400 shrink-0" />
-                  {errorMsg}
-                </div>
-              )}
-
-              <div className="space-y-1.5">
-                <Label htmlFor="description" className="font-semibold text-slate-300 text-sm flex items-center gap-1.5">
-                  <FileText size={14} className="text-slate-400" /> Descrição *
-                </Label>
-                <TextInput id="description" placeholder="Ex: Carro, Celular, Geladeira" value={formParcelada.description} onChange={(e) => setFormParcelada({ ...formParcelada, description: e.target.value })} required className="[&_input]:bg-slate-900 [&_input]:border-slate-600 [&_input]:text-white [&_input]:placeholder-slate-500 [&_input]:focus:border-primary-500" />
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-1.5">
-                  <Label htmlFor="quantityInstallments" className="font-semibold text-slate-300 text-sm flex items-center gap-1.5">
-                    <Calendar size={14} className="text-slate-400" /> Qtd. Parcelas *
-                  </Label>
-                  <TextInput id="quantityInstallments" type="number" min="1" placeholder="Ex: 12" value={formParcelada.quantityInstallments} onChange={(e) => setFormParcelada({ ...formParcelada, quantityInstallments: e.target.value })} required className="[&_input]:bg-slate-900 [&_input]:border-slate-600 [&_input]:text-white [&_input]:placeholder-slate-500 [&_input]:focus:border-primary-500" />
-                </div>
-                <div className="space-y-1.5">
-                  <Label htmlFor="installmentValue" className="font-semibold text-slate-300 text-sm flex items-center gap-1.5">
-                    <DollarSign size={14} className="text-slate-400" /> Valor da Parcela *
-                  </Label>
-                  <TextInput id="installmentValue" type="text" placeholder="0,00" value={formParcelada.installmentValue} onChange={(e) => setFormParcelada({ ...formParcelada, installmentValue: e.target.value })} required className="[&_input]:bg-slate-900 [&_input]:border-slate-600 [&_input]:text-white [&_input]:placeholder-slate-500 [&_input]:focus:border-primary-500" />
-                </div>
-              </div>
-
-              <div className="flex justify-end gap-3 pt-2 border-t border-slate-700">
-                <Button type="button" color="gray" onClick={() => setIsModalParceladaOpen(false)} disabled={saving} className="font-medium bg-slate-700 text-slate-200 border-slate-600 hover:bg-slate-600">Cancelar</Button>
-                <Button type="submit" disabled={saving} className="bg-primary-700 hover:bg-primary-600 text-white font-bold px-4 border-0">
-                  {saving ? <><Spinner size="sm" className="mr-2" /> Salvando...</> : <><CheckCircle2 size={15} className="mr-2" /> Salvar</>}
-                </Button>
-              </div>
-            </form>
-          </div>
-        </ModalBody>
-      </Modal>
-
-      <Modal show={isModalOpen} onClose={() => setIsModalOpen(false)} size="md" popup root={typeof window !== 'undefined' ? document.body : undefined}>
-        <ModalBody className="p-6 bg-slate-800 rounded-xl border border-slate-700">
-          <div className="space-y-5">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-700">
-              <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                {editingExpense ? <><SquarePen className="text-primary-400" size={20} /> Editar Despesa</> : <><CirclePlus className="text-primary-400" size={20} /> Nova Despesa</>}
-              </h3>
-              <button type="button" onClick={() => setIsModalOpen(false)} className="text-slate-400 hover:text-white transition-colors p-1 rounded-lg hover:bg-slate-700">
-                <X size={18} />
-              </button>
-            </div>
-
-            <form onSubmit={salvarDespesaAsync} className="space-y-4">
-              {errorMsg && (
-                <div className="p-3 text-sm text-red-300 rounded-lg bg-red-500/10 border border-red-500/30 flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-red-400 shrink-0" />
-                  {errorMsg}
-                </div>
-              )}
-
-              <div className="space-y-1.5">
-                <Label htmlFor="purchaseName" className="font-semibold text-slate-300 text-sm flex items-center gap-1.5">
-                  <FileText size={14} className="text-slate-400" /> Descrição *
-                </Label>
-                <TextInput id="purchaseName" placeholder="Ex: Supermercado, Aluguel, Uber" value={formData.purchaseName} onChange={(e) => setFormData({ ...formData, purchaseName: e.target.value })} required className="[&_input]:bg-slate-900 [&_input]:border-slate-600 [&_input]:text-white [&_input]:placeholder-slate-500 [&_input]:focus:border-primary-500 [&_input]:focus:ring-primary-500/20" />
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-1.5">
-                  <Label htmlFor="purchaseValue" className="font-semibold text-slate-300 text-sm flex items-center gap-1.5">
-                    <DollarSign size={14} className="text-slate-400" /> Valor (R$) *
-                  </Label>
-                  <TextInput id="purchaseValue" type="text" placeholder="0,00" value={formData.purchaseValue} onChange={(e) => setFormData({ ...formData, purchaseValue: e.target.value })} required className="[&_input]:bg-slate-900 [&_input]:border-slate-600 [&_input]:text-white [&_input]:placeholder-slate-500 [&_input]:focus:border-primary-500" />
-                </div>
-                <div className="space-y-1.5">
-                  <Label htmlFor="purchaseDate" className="font-semibold text-slate-300 text-sm flex items-center gap-1.5">
-                    <Calendar size={14} className="text-slate-400" /> Data *
-                  </Label>
-                  <TextInput id="purchaseDate" type="date" value={formData.purchaseDate} onChange={(e) => setFormData({ ...formData, purchaseDate: e.target.value })} required className="[&_input]:bg-slate-900 [&_input]:border-slate-600 [&_input]:text-white [&_input]:focus:border-primary-500" />
-                </div>
-              </div>
-
-              <div className="space-y-1.5">
-                <Label htmlFor="bankName" className="font-semibold text-slate-300 text-sm flex items-center gap-1.5">
-                  <Landmark size={14} className="text-slate-400" /> Categoria / Banco *
-                </Label>
-                <Select id="bankName" value={formData.bankName} onChange={(e) => setFormData({ ...formData, bankName: e.target.value })} required className="[&_select]:bg-slate-900 [&_select]:border-slate-600 [&_select]:text-white [&_select]:focus:border-primary-500">
-                  <option value="">Selecione...</option>
-                  {getOpcoesBancos().map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
-                </Select>
-              </div>
-
-              <div className="space-y-1.5">
-                <Label htmlFor="purchaseTypePayment" className="font-semibold text-slate-300 text-sm flex items-center gap-1.5">
-                  <ShoppingCart size={14} className="text-slate-400" /> Forma de Pagamento *
-                </Label>
-                <Select id="purchaseTypePayment" value={formData.purchaseTypePayment} onChange={(e) => setFormData({ ...formData, purchaseTypePayment: e.target.value })} required className="[&_select]:bg-slate-900 [&_select]:border-slate-600 [&_select]:text-white [&_select]:focus:border-primary-500">
-                  <option value="">Selecione...</option>
-                  {getOpcoesPagamento().map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
-                </Select>
-              </div>
-
-              <div className="flex justify-end gap-3 pt-2 border-t border-slate-700">
-                <Button type="button" color="gray" onClick={() => setIsModalOpen(false)} disabled={saving} className="font-medium bg-slate-700 text-slate-200 border-slate-600 hover:bg-slate-600">Cancelar</Button>
-                <Button type="submit" disabled={saving} className="bg-primary-700 hover:bg-primary-600 text-white font-bold px-4 border-0">
-                  {saving ? <><Spinner size="sm" className="mr-2" /> Salvando...</> : <><CheckCircle2 size={15} className="mr-2" /> Salvar</>}
-                </Button>
-              </div>
-            </form>
-          </div>
-        </ModalBody>
-      </Modal>
+      <ModalDespesa
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        editingExpense={editingExpense}
+        formData={formData}
+        setFormData={setFormData}
+        onSubmit={salvarDespesaAsync}
+        saving={saving}
+        errorMsg={errorMsg}
+        opcoesBancos={getOpcoesBancos()}
+        opcoesPagamento={getOpcoesPagamento()}
+      />
     </div >
   );
 }
