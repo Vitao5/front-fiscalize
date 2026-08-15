@@ -7,7 +7,7 @@ import { ModalDespesaFixa } from "@/components/ModalDespesaFixa";
 import { CirclePlus, DollarSign, Landmark, ShoppingCart, SquarePen, Trash2, ChevronDown, ChevronLeft, ChevronRight, Calendar } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { cadastraDespesaExtra, alteraDespesaExtra, deletaDespesa, buscaDespesasExtras, cadastrarCompraParcelada, alteraCompraParcelada, deletaCompraParcelada, deletaParcelaIndividual, cadastraDespesaFixa, alteraDespesaFixa, deletaDespesaFixa } from "./dashboard-action";
+import { cadastraDespesaExtra, alteraDespesaExtra, deletaDespesaExtra, buscaDespesasExtras, cadastrarCompraParcelada, alteraCompraParcelada, deletaCompraParcelada, deletaParcelaIndividual, cadastraDespesaFixa, alteraDespesaFixa, deletaDespesaFixa, buscaDespesasFixas, buscaComprasParceladas } from "./dashboard-action";
 import { parseBRLToFloat } from "@/comum-functions";
 
 
@@ -152,6 +152,8 @@ export default function DashboardClient({ initialDespesas, initialFormasPagament
       }
 
       setIsModalParceladaOpen(false);
+      const novasParceladas = await buscaComprasParceladas();
+      setComprasParceladas(novasParceladas);
       router.refresh();
     } catch (error: any) {
       setErrorMsg(error.message || "Ocorreu um erro ao salvar a compra parcelada. Tente novamente.");
@@ -164,6 +166,8 @@ export default function DashboardClient({ initialDespesas, initialFormasPagament
 
     try {
       await deletaCompraParcelada(id);
+      const novasParceladas = await buscaComprasParceladas();
+      setComprasParceladas(novasParceladas);
       router.refresh();
     } catch (error) {
       console.error("Erro ao deletar:", error);
@@ -174,6 +178,8 @@ export default function DashboardClient({ initialDespesas, initialFormasPagament
 
     try {
       await deletaParcelaIndividual(installmentId);
+      const novasParceladas = await buscaComprasParceladas();
+      setComprasParceladas(novasParceladas);
       router.refresh();
     } catch (error) {
       console.error("Erro ao deletar parcela:", error);
@@ -304,6 +310,8 @@ export default function DashboardClient({ initialDespesas, initialFormasPagament
       }
 
       setIsModalFixaOpen(false);
+      const novasFixas = await buscaDespesasFixas();
+      setDespesasFixas(novasFixas);
       router.refresh();
     } catch (error: any) {
       setErrorMsg(error.message || "Ocorreu um erro ao salvar a despesa fixa. Tente novamente.");
@@ -315,6 +323,8 @@ export default function DashboardClient({ initialDespesas, initialFormasPagament
   const deletarDespesaFixaAsync = async (id: string) => {
     try {
       await deletaDespesaFixa(id);
+      const novasFixas = await buscaDespesasFixas();
+      setDespesasFixas(novasFixas);
       router.refresh();
     } catch (error) {
       console.error("Erro ao deletar despesa fixa:", error);
@@ -411,7 +421,7 @@ export default function DashboardClient({ initialDespesas, initialFormasPagament
                       }} className="text-gray-400 hover:text-primary-600 transition-colors p-1 rounded hover:bg-primary-50">
                         <SquarePen size={14} />
                       </button>
-                      <button onClick={async () => { await deletaDespesa(despesa.id); const novas = await buscaDespesasExtras(); setDespesas(novas); router.refresh(); }} className="text-gray-300 hover:text-red-500 transition-colors p-1 rounded hover:bg-red-50">
+                      <button onClick={async () => { await deletaDespesaExtra(despesa.id); const novas = await buscaDespesasExtras(); setDespesas(novas); router.refresh(); }} className="text-gray-300 hover:text-red-500 transition-colors p-1 rounded hover:bg-red-50">
                         <Trash2 size={13} />
                       </button>
                     </div>

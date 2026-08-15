@@ -1,4 +1,4 @@
-'use server'
+import 'server-only'
 import { cookies } from 'next/headers'
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || 'http://127.0.0.1:3002/api'
@@ -13,8 +13,6 @@ export interface ApiResponse<T = any> {
 
 class ApiClient {
   private baseUrl = API_BASE
-
-  
 
   async request<T = any>(
     endpoint: string,

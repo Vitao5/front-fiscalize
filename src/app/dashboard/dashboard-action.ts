@@ -2,6 +2,7 @@
 
 import { apiClient } from '@/lib/api-client';
 import { ApiResponse } from '@/lib/api-client';
+import { revalidatePath } from 'next/cache';
 
 
 function getErrorMessage(response: ApiResponse): string {
@@ -19,6 +20,30 @@ export async function buscaDespesasExtras() {
     return [];
   }
 }
+
+export async function cadastraDespesaExtra(despesa: any) {
+  const response = await apiClient.post('/extra-purchase/register', [despesa]);
+  if (!response.ok) throw new Error(getErrorMessage(response));
+  revalidatePath('/dashboard');
+  return response.data;
+}
+
+export async function alteraDespesaExtra(despesa: any) {
+  const response = await apiClient.post('/extra-purchase/update', despesa);
+  if (!response.ok) throw new Error(getErrorMessage(response));
+  revalidatePath('/dashboard');
+  return response.data;
+}
+
+export async function deletaDespesaExtra(id: string) {
+  const response = await apiClient.post('/extra-purchase/delete', { id });
+  if (!response.ok) throw new Error(getErrorMessage(response));
+  revalidatePath('/dashboard');
+  return response.data;
+}
+
+
+
 
 export async function buscaFormasPagamento() {
   try {
@@ -38,27 +63,13 @@ export async function buscaBancos() {
   }
 }
 
-export async function cadastraDespesaExtra(despesa: any) {
-  const response = await apiClient.post('/extra-purchase/register', [despesa]);
-  if (!response.ok) throw new Error(getErrorMessage(response));
-  return response.data;
-}
 
-export async function alteraDespesaExtra(despesa: any) {
-  const response = await apiClient.post('/extra-purchase/update', despesa);
-  if (!response.ok) throw new Error(getErrorMessage(response));
-  return response.data;
-}
 
-export async function deletaDespesa(id: string) {
-  const response = await apiClient.post('/extra-purchase/delete', { id });
-  if (!response.ok) throw new Error(getErrorMessage(response));
-  return response.data;
-}
 
 export async function cadastrarCompraParcelada(compra: any) {
   const response = await apiClient.post('/installment-purchase/register', compra);
   if (!response.ok) throw new Error(getErrorMessage(response));
+  revalidatePath('/dashboard');
   return response.data;
 }
 
@@ -75,18 +86,21 @@ export async function buscaComprasParceladas() {
 export async function alteraCompraParcelada(compra: any) {
   const response = await apiClient.post('/installment-purchase/update', compra);
   if (!response.ok) throw new Error(getErrorMessage(response));
+  revalidatePath('/dashboard');
   return response.data;
 }
 
 export async function deletaCompraParcelada(id: string) {
   const response = await apiClient.post('/installment-purchase/delete', { id });
   if (!response.ok) throw new Error(getErrorMessage(response));
+  revalidatePath('/dashboard');
   return response.data;
 }
 
 export async function deletaParcelaIndividual(id: number | string) {
   const response = await apiClient.post('/installment-purchase/delete-installment', { id });
   if (!response.ok) throw new Error(getErrorMessage(response));
+  revalidatePath('/dashboard');
   return response.data;
 }
 
@@ -102,17 +116,20 @@ export async function buscaDespesasFixas() {
 export async function cadastraDespesaFixa(despesa: any) {
   const response = await apiClient.post('/fixed-purchase/register', despesa);
   if (!response.ok) throw new Error(getErrorMessage(response));
+  revalidatePath('/dashboard');
   return response.data;
 }
 
 export async function alteraDespesaFixa(despesa: any) {
   const response = await apiClient.post('/fixed-purchase/update', despesa);
   if (!response.ok) throw new Error(getErrorMessage(response));
+  revalidatePath('/dashboard');
   return response.data;
 }
 
 export async function deletaDespesaFixa(id: string) {
   const response = await apiClient.post('/fixed-purchase/delete', { id });
   if (!response.ok) throw new Error(getErrorMessage(response));
+  revalidatePath('/dashboard');
   return response.data;
 }
