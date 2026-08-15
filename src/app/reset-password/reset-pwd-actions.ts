@@ -11,3 +11,19 @@ export async function enviarCodigo(formData: FormData) {
 
   return await apiClient.post('/users/send-code', { email: email })
 }
+
+export async function verificarCodigo(email: string, codePassword: string) {
+  if (!email || !codePassword) {
+    return { ok: false, status: 0, message: 'Preencha todos os campos!' }
+  }
+
+  return await apiClient.post('/users/verify-code', { email, codePassword })
+}
+
+export async function resetarSenha(email: string, codePassword: string, password: string) {
+  if (!email || !codePassword || !password) {
+    return { ok: false, status: 0, message: 'Preencha todos os campos!' }
+  }
+
+  return await apiClient.post('/users/reset-password', { email, codePassword, password })
+}

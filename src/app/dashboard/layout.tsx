@@ -5,7 +5,7 @@ import { SidebarProvider } from "@/context/SidebarContext";
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
-      <div className="flex h-screen overflow-hidden bg-slate-950">
+      <div className="flex h-screen overflow-hidden bg-gray-50">
         <AppSidebar />
         <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
           <AppHeader />

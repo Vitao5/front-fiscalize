@@ -89,3 +89,30 @@ export async function deletaParcelaIndividual(id: number | string) {
   if (!response.ok) throw new Error(getErrorMessage(response));
   return response.data;
 }
+
+export async function buscaDespesasFixas() {
+  try {
+    const response = await apiClient.post('/fixed-purchase/list', {});
+    return response.ok ? (response.data?.listFormatted ?? []) : [];
+  } catch {
+    return [];
+  }
+}
+
+export async function cadastraDespesaFixa(despesa: any) {
+  const response = await apiClient.post('/fixed-purchase/register', despesa);
+  if (!response.ok) throw new Error(getErrorMessage(response));
+  return response.data;
+}
+
+export async function alteraDespesaFixa(despesa: any) {
+  const response = await apiClient.post('/fixed-purchase/update', despesa);
+  if (!response.ok) throw new Error(getErrorMessage(response));
+  return response.data;
+}
+
+export async function deletaDespesaFixa(id: string) {
+  const response = await apiClient.post('/fixed-purchase/delete', { id });
+  if (!response.ok) throw new Error(getErrorMessage(response));
+  return response.data;
+}

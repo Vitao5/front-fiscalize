@@ -5,33 +5,33 @@ import { Button, Label, TextInput, Spinner } from "flowbite-react";
 import { CirclePlus, DollarSign, SquarePen, Calendar, FileText, CheckCircle2, X } from "lucide-react";
 import { formatBRLInput } from "@/comum-functions";
 
-interface FormParcelada {
-  description: string;
-  quantityInstallments: string;
-  installmentValue: string;
+interface FormDespesaFixa {
+  name: string;
+  value: string;
+  dayMaxPayment: string;
 }
 
-interface ModalCompraParceladaProps {
+interface ModalDespesaFixaProps {
   isOpen: boolean;
   onClose: () => void;
-  editingParcelada: any | null;
-  formParcelada: FormParcelada;
-  setFormParcelada: React.Dispatch<React.SetStateAction<FormParcelada>>;
+  editingDespesaFixa: any | null;
+  formDespesaFixa: FormDespesaFixa;
+  setFormDespesaFixa: React.Dispatch<React.SetStateAction<FormDespesaFixa>>;
   onSubmit: (e: React.FormEvent) => void;
   saving: boolean;
   errorMsg: string;
 }
 
-export const ModalCompraParcelada = ({
+export const ModalDespesaFixa = ({
   isOpen,
   onClose,
-  editingParcelada,
-  formParcelada,
-  setFormParcelada,
+  editingDespesaFixa,
+  formDespesaFixa,
+  setFormDespesaFixa,
   onSubmit,
   saving,
   errorMsg,
-}: ModalCompraParceladaProps) => {
+}: ModalDespesaFixaProps) => {
   if (!isOpen) return null;
 
   return (
@@ -45,13 +45,13 @@ export const ModalCompraParcelada = ({
         <div className="space-y-5">
           <div className="flex items-center justify-between pb-3 border-b border-gray-200">
             <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-              {editingParcelada ? (
+              {editingDespesaFixa ? (
                 <>
-                  <SquarePen className="text-primary-600" size={20} /> Editar Compra Parcelada
+                  <SquarePen className="text-primary-600" size={20} /> Editar Despesa Fixa
                 </>
               ) : (
                 <>
-                  <CirclePlus className="text-primary-600" size={20} /> Nova Compra Parcelada
+                  <CirclePlus className="text-primary-600" size={20} /> Nova Despesa Fixa
                 </>
               )}
             </h3>
@@ -73,14 +73,13 @@ export const ModalCompraParcelada = ({
             )}
 
             <div className="space-y-1.5">
-              <Label htmlFor="description" className="font-semibold text-gray-600 text-sm flex items-center gap-1.5">
-                <FileText size={14} className="text-gray-400" /> Descrição *
+              <Label htmlFor="fixedName" className="font-semibold text-gray-600 text-sm flex items-center gap-1.5">
+                <FileText size={14} className="text-gray-400" /> Nome da despesa *
               </Label>
               <TextInput
-                id="description"
-              
-                value={formParcelada.description}
-                onChange={(e) => setFormParcelada({ ...formParcelada, description: e.target.value })}
+                id="fixedName"
+                value={formDespesaFixa.name}
+                onChange={(e) => setFormDespesaFixa({ ...formDespesaFixa, name: e.target.value })}
                 required
                 className="[&_input]:bg-gray-50 [&_input]:h-10 [&_input]:px-3 [&_input]:border-gray-300 [&_input]:text-gray-900 [&_input]:placeholder-gray-400 [&_input]:focus:border-primary-500"
               />
@@ -88,35 +87,36 @@ export const ModalCompraParcelada = ({
 
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1.5">
-                <Label htmlFor="quantityInstallments" className="font-semibold text-gray-600 text-sm flex items-center gap-1.5">
-                  <Calendar size={14} className="text-gray-400" /> Qtd. Parcelas *
-                </Label>
-                <TextInput
-                  id="quantityInstallments"
-                  type="number"
-                  min="1"
-                  value={formParcelada.quantityInstallments}
-                  onChange={(e) => setFormParcelada({ ...formParcelada, quantityInstallments: e.target.value })}
-                  required
-                  className="[&_input]:bg-gray-50 [&_input]:border-gray-300 [&_input]:h-10 [&_input]:px-3 [&_input]:text-gray-900 [&_input]:placeholder-gray-400 [&_input]:focus:border-primary-500"
-                />
-              </div>
-              <div className="space-y-1.5">
-                <Label htmlFor="installmentValue" className="font-semibold text-gray-600 text-sm flex items-center gap-1.5">
-                  <DollarSign size={14} className="text-gray-400" /> Valor da Parcela *
+                <Label htmlFor="fixedValue" className="font-semibold text-gray-600 text-sm flex items-center gap-1.5">
+                  <DollarSign size={14} className="text-gray-400" /> Valor mensal *
                 </Label>
                 <div className="flex rounded-lg border border-gray-300 bg-gray-50 focus-within:border-primary-500 overflow-hidden">
                   <span className="flex items-center px-3 text-sm font-semibold text-gray-500 bg-gray-100 border-r border-gray-300 select-none">R$</span>
                   <input
-                    id="installmentValue"
+                    id="fixedValue"
                     type="text"
                     placeholder="0,00"
-                    value={formParcelada.installmentValue}
-                    onChange={(e) => setFormParcelada({ ...formParcelada, installmentValue: formatBRLInput(e.target.value) })}
+                    value={formDespesaFixa.value}
+                    onChange={(e) => setFormDespesaFixa({ ...formDespesaFixa, value: formatBRLInput(e.target.value) })}
                     required
                     className="w-full bg-transparent text-gray-900 placeholder-gray-400 px-3 py-2.5 text-sm outline-none"
                   />
                 </div>
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="dayMaxPayment" className="font-semibold text-gray-600 text-sm flex items-center gap-1.5">
+                  <Calendar size={14} className="text-gray-400" /> Dia vencimento *
+                </Label>
+                <TextInput
+                  id="dayMaxPayment"
+                  type="number"
+                  min="1"
+                  max="31"
+                  value={formDespesaFixa.dayMaxPayment}
+                  onChange={(e) => setFormDespesaFixa({ ...formDespesaFixa, dayMaxPayment: e.target.value })}
+                  required
+                  className="[&_input]:bg-gray-50 [&_input]:border-gray-300 [&_input]:h-10 [&_input]:px-3 [&_input]:text-gray-900 [&_input]:placeholder-gray-400 [&_input]:focus:border-primary-500"
+                />
               </div>
             </div>
 

@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0f172a;
-  --foreground: #e2e8f0;
+  --background: #f8fafc;
+  --foreground: #1f2937;
 }
 
 @theme {
@@ -21,7 +21,7 @@
 
 @layer base {
   :root {
-    color-scheme: dark;
+    color-scheme: light;
   }
 }
 
