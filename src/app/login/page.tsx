@@ -1,7 +1,7 @@
 'use client'
 
 import Link from "next/link";
-import { realizarLogin } from "./login-actions";
+import { realizarLogin, logout } from "./login-actions";
 import { useActionState, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -14,7 +14,11 @@ export default function LoginPage() {
     if (state.sucess) {
       router.push('/dashboard');
     }
-  }, [state.sucess, state.user, router]);
+  }, [state.sucess, state.user, router])
+
+  useEffect(() => {
+    logout()
+  }, [])
 
   return (
     <section

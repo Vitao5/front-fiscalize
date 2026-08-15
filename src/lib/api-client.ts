@@ -1,3 +1,4 @@
+'use server'
 import { cookies } from 'next/headers'
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || 'http://127.0.0.1:3002/api'
@@ -13,17 +14,15 @@ export interface ApiResponse<T = any> {
 class ApiClient {
   private baseUrl = API_BASE
 
-  private async getToken(): Promise<string> {
-    const cookieStore = await cookies()
-    return cookieStore.get('auth_token')?.value ?? ''
-  }
+  
 
   async request<T = any>(
     endpoint: string,
     options: RequestInit = {}
   ): Promise<ApiResponse<T>> {
     const url = `${this.baseUrl}${endpoint}`
-    const token = await this.getToken()
+    const cookieStore = await cookies()
+    const token = cookieStore.get('auth_token')?.value
 
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',

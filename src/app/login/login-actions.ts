@@ -20,19 +20,15 @@ export async function realizarLogin(message: any, formData: FormData) {
     }
   }
 
-  if (!response.data?.token) {
-    return {
-      message: 'A API não retornou um token de autenticação.',
-      sucess: false,
-    }
-  }
 
   const cookieStore = await cookies()
   cookieStore.set('auth_token', response.data.token, {
+    //o httponly impede roubo de token via js, secure define http ou https, 
+    //samesite protge contra csrf
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
-    maxAge: 60 * 60 * 24,
+    sameSite: 'strict',
+    maxAge: 60 * 60 * 24 * 7,
     path: '/',
   })
 
@@ -46,4 +42,9 @@ export async function realizarLogin(message: any, formData: FormData) {
       token: response.data.token,
     },
   }
+}
+
+export async function logout() {
+  const cookieStore = await cookies()
+  cookieStore.delete('auth_token')
 }
