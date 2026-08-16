@@ -445,9 +445,19 @@ export default function DashboardClient({
 
   const filteredTransactions = useMemo(() => {
     const txs = dadosPluggy?.transacoes || [];
-    if (!searchTx.trim()) return txs;
+    const now = new Date();
+    const currentMonth = now.getMonth();
+    const currentYear = now.getFullYear();
+
+
+    const mesVigenteTxs = txs.filter((t) => {
+      const d = new Date(t.date);
+      return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
+    });
+
+    if (!searchTx.trim()) return mesVigenteTxs;
     const term = searchTx.toLowerCase();
-    return txs.filter(
+    return mesVigenteTxs.filter(
       (t) =>
         t.description.toLowerCase().includes(term) ||
         (t.category && t.category.toLowerCase().includes(term)) ||
@@ -455,7 +465,13 @@ export default function DashboardClient({
     );
   }, [dadosPluggy?.transacoes, searchTx]);
 
-  const totalGastosMesConsolidado = (dadosPluggy?.totalGastosMesPluggy || 0) + saldoTotal;
+  const totalDespesasManuais = useMemo(() => {
+    return despesas.reduce((sum: number, d: any) => sum + parseFloat(d.purchaseValue || 0), 0);
+  }, [despesas]);
+
+  const totalGastosMesConsolidado = useMemo(() => {
+    return (dadosPluggy?.totalGastosMesPluggy || 0) + totalDespesasManuais + saldoTotalDespesasFixas;
+  }, [dadosPluggy?.totalGastosMesPluggy, totalDespesasManuais, saldoTotalDespesasFixas]);
 
   return (
     <div className="space-y-6 lg:ml-[60px]">

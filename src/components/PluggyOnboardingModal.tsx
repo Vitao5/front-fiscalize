@@ -1,7 +1,12 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { PluggyConnect } from "react-pluggy-connect";
+import dynamic from "next/dynamic";
+
+const PluggyConnect = dynamic(
+  () => import("react-pluggy-connect").then((mod) => mod.PluggyConnect),
+  { ssr: false }
+);
 import {
   Landmark,
   CheckCircle2,
