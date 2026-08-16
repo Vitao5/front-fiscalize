@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Button, Label, TextInput, Select, Spinner } from "flowbite-react";
+import { Button, TextInput, Select, Spinner } from "flowbite-react";
 import { CirclePlus, DollarSign, Landmark, ShoppingCart, SquarePen, Calendar, FileText, CheckCircle2, X } from "lucide-react";
 import { formatBRLInput } from "@/comum-functions";
 
@@ -79,9 +79,9 @@ export const ModalDespesa = ({
             )}
 
             <div className="space-y-1.5">
-              <Label htmlFor="purchaseName" className="font-semibold text-gray-600 text-sm flex items-center gap-1.5">
+              <label htmlFor="purchaseName" className="font-semibold text-gray-600 text-sm flex items-center gap-1.5">
                 <FileText size={14} className="text-gray-400" /> Descrição *
-              </Label>
+              </label>
               <TextInput
                 id="purchaseName"
                 placeholder="Ex: Supermercado, Aluguel, Uber"
@@ -94,9 +94,9 @@ export const ModalDespesa = ({
 
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1.5">
-                <Label htmlFor="purchaseValue" className="font-semibold text-gray-600 text-sm flex items-center gap-1.5">
+                <label htmlFor="purchaseValue" className="font-semibold text-gray-600 text-sm flex items-center gap-1.5">
                   <DollarSign size={14} className="text-gray-400" /> Valor (R$) *
-                </Label>
+                </label>
                 <div className="flex rounded-lg border border-gray-300 bg-gray-50 focus-within:border-primary-500 overflow-hidden">
                   <span className="flex items-center px-3 text-sm font-semibold text-gray-500 bg-gray-100 border-r border-gray-300 select-none">R$</span>
                   <input
@@ -111,9 +111,9 @@ export const ModalDespesa = ({
                 </div>
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="purchaseDate" className="font-semibold text-gray-600 text-sm flex items-center gap-1.5">
+                <label htmlFor="purchaseDate" className="font-semibold text-gray-600 text-sm flex items-center gap-1.5">
                   <Calendar size={14} className="text-gray-400" /> Data *
-                </Label>
+                </label>
                 <TextInput
                   id="purchaseDate"
                   type="date"
@@ -126,9 +126,9 @@ export const ModalDespesa = ({
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="bankName" className="font-semibold text-gray-600 text-sm flex items-center gap-1.5">
+              <label htmlFor="bankName" className="font-semibold text-gray-600 text-sm flex items-center gap-1.5">
                 <Landmark size={14} className="text-gray-400" /> Categoria
-              </Label>
+              </label>
               <Select
                 id="bankName"
                 value={formData.bankName}
@@ -144,9 +144,9 @@ export const ModalDespesa = ({
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="purchaseTypePayment" className="font-semibold text-gray-600 text-sm flex items-center gap-1.5">
+              <label htmlFor="purchaseTypePayment" className="font-semibold text-gray-600 text-sm flex items-center gap-1.5">
                 <ShoppingCart size={14} className="text-gray-400" /> Forma de Pagamento *
-              </Label>
+              </label>
               <Select
                 id="purchaseTypePayment"
                 value={formData.purchaseTypePayment}

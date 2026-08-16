@@ -40,6 +40,7 @@ export async function realizarLogin(message: any, formData: FormData) {
       email: response.data.email,
       admin: response.data.userRoot,
       token: response.data.token,
+      onboardingCompleted: response.data.onboardingCompleted || false,
     },
   }
 }

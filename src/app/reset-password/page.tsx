@@ -82,12 +82,8 @@ export default function ResetPasswordPage() {
       startCooldown()
     }
 
-    if (response.ok) {
-      setStep('code')
-      setErrorMessage('')
-    } else {
-      setErrorMessage(response.message || 'Erro ao enviar código.')
-    }
+    setStep('code')
+    setErrorMessage('')
   }
 
   

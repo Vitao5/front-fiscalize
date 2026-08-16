@@ -1,18 +1,21 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { buscaDespesasExtras, buscaFormasPagamento, buscaBancos, buscaComprasParceladas, buscaDespesasFixas } from './dashboard-action';
+import { buscarStatusOnboarding, buscarDadosDashboardPluggy } from './pluggy-actions';
 import DashboardClient from './dashboard-client';
 
 export default async function DashboardPage() {
   const token = (await cookies()).get('auth_token')?.value;
   if (!token) redirect('/login');
 
-  const [despesas, formasPagamento, bancos, comprasParceladas, despesasFixas] = await Promise.all([
+  const [despesas, formasPagamento, bancos, comprasParceladas, despesasFixas, onboardingStatus, dadosPluggy] = await Promise.all([
     buscaDespesasExtras(),
     buscaFormasPagamento(),
     buscaBancos(),
     buscaComprasParceladas(),
-    buscaDespesasFixas()
+    buscaDespesasFixas(),
+    buscarStatusOnboarding(),
+    buscarDadosDashboardPluggy()
   ]);
 
   const saldoTotal = despesas.reduce(
@@ -28,6 +31,8 @@ export default async function DashboardPage() {
       initialComprasParceladas={comprasParceladas}
       initialDespesasFixas={despesasFixas}
       saldoTotal={saldoTotal}
+      onboardingCompleted={onboardingStatus?.onboardingCompleted ?? false}
+      initialDadosPluggy={dadosPluggy}
     />
   );
 }

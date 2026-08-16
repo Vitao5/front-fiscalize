@@ -9,9 +9,9 @@ type NavItem = { name: string; icon: React.ReactNode; path: string };
 
 const navItems: NavItem[] = [
   { icon: <LayoutDashboard size={20} />, name: "Dashboard", path: "/dashboard" },
-  { icon: <PieChart size={20} />, name: "Relatórios", path: "/dashboard/reports" },
-  { icon: <User size={20} />, name: "Perfil", path: "/dashboard/profile" },
-  { icon: <Settings size={20} />, name: "Configurações", path: "/dashboard/settings" },
+  { icon: <PieChart size={20} />, name: "Relatórios", path: "/login" },
+  { icon: <User size={20} />, name: "Perfil", path: "/login" },
+  { icon: <Settings size={20} />, name: "Configurações", path: "/login" },
   { icon: <LogOut size={20} />, name: "Sair", path: "/login" },
 ];
 

@@ -15,7 +15,7 @@ export const CustomModal = ({ isOpen, onClose, title, children }: CustomModalPro
     <Modal show={isOpen} size="md" onClose={onClose} popup>
       <ModalHeader>
         <div className="px-4 py-2">
-          <span className="text-xl font-medium text-gray-900 dark:text-white">{title}</span>
+          <span className="text-xl font-medium text-gray-900 ">{title}</span>
         </div>
       </ModalHeader>
       <ModalBody>

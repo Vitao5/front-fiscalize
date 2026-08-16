@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Button, Label, TextInput, Spinner } from "flowbite-react";
+import { Button, TextInput, Spinner } from "flowbite-react";
 import { CirclePlus, DollarSign, SquarePen, Calendar, FileText, CheckCircle2, X } from "lucide-react";
 import { formatBRLInput } from "@/comum-functions";
 
@@ -73,9 +73,9 @@ export const ModalDespesaFixa = ({
             )}
 
             <div className="space-y-1.5">
-              <Label htmlFor="fixedName" className="font-semibold text-gray-600 text-sm flex items-center gap-1.5">
+              <label htmlFor="fixedName" className="font-semibold text-gray-600 text-sm flex items-center gap-1.5">
                 <FileText size={14} className="text-gray-400" /> Nome da despesa *
-              </Label>
+              </label>
               <TextInput
                 id="fixedName"
                 value={formDespesaFixa.name}
@@ -87,9 +87,9 @@ export const ModalDespesaFixa = ({
 
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1.5">
-                <Label htmlFor="fixedValue" className="font-semibold text-gray-600 text-sm flex items-center gap-1.5">
+                <label htmlFor="fixedValue" className="font-semibold text-gray-600 text-sm flex items-center gap-1.5">
                   <DollarSign size={14} className="text-gray-400" /> Valor mensal *
-                </Label>
+                </label>
                 <div className="flex rounded-lg border border-gray-300 bg-gray-50 focus-within:border-primary-500 overflow-hidden">
                   <span className="flex items-center px-3 text-sm font-semibold text-gray-500 bg-gray-100 border-r border-gray-300 select-none">R$</span>
                   <input
@@ -104,9 +104,9 @@ export const ModalDespesaFixa = ({
                 </div>
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="dayMaxPayment" className="font-semibold text-gray-600 text-sm flex items-center gap-1.5">
+                <label htmlFor="dayMaxPayment" className="font-semibold text-gray-600 text-sm flex items-center gap-1.5">
                   <Calendar size={14} className="text-gray-400" /> Dia vencimento *
-                </Label>
+                </label>
                 <TextInput
                   id="dayMaxPayment"
                   type="number"

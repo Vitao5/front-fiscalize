@@ -1,14 +1,13 @@
 "use client";
 
 import { useSidebar } from "@/context/SidebarContext";
-import Link from "next/link";
 import React, { useState, useEffect, useRef } from "react";
 
 const AppHeader: React.FC = () => {
   const { isMobileOpen, toggleSidebar, toggleMobileSidebar } = useSidebar();
 
   const handleToggle = () => {
-    if (window.innerWidth >= 1024) toggleSidebar();
+    if (window?.innerWidth >= 1024) toggleSidebar();
     else toggleMobileSidebar();
   };
 
