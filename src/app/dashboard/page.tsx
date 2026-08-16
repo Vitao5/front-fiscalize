@@ -5,8 +5,9 @@ import { buscarStatusOnboarding, buscarDadosDashboardPluggy } from './pluggy-act
 import DashboardClient from './dashboard-client';
 
 export default async function DashboardPage() {
-  const token = (await cookies()).get('auth_token')?.value;
-  if (!token) redirect('/login');
+  const cookieStore = await cookies();
+  const hasAuth = cookieStore.get('auth_token')?.value || cookieStore.get('refresh_token')?.value;
+  if (!hasAuth) redirect('/login');
 
   const [despesas, formasPagamento, bancos, comprasParceladas, despesasFixas, onboardingStatus, dadosPluggy] = await Promise.all([
     buscaDespesasExtras(),

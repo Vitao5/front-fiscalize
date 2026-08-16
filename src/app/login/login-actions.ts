@@ -28,9 +28,20 @@ export async function realizarLogin(message: any, formData: FormData) {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'strict',
-    maxAge: 60 * 60 * 24 * 7,
+    maxAge: 60 * 15, // 15 minutos
     path: '/',
   })
+
+  // Refresh Token de 7 dias
+  if (response.data.refreshToken) {
+    cookieStore.set('refresh_token', response.data.refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 60 * 60 * 24 * 7, // 7 dias
+      path: '/',
+    })
+  }
 
   return {
     message: response.message ?? 'Login realizado com sucesso',
@@ -47,5 +58,10 @@ export async function realizarLogin(message: any, formData: FormData) {
 
 export async function logout() {
   const cookieStore = await cookies()
+  const refreshToken = cookieStore.get('refresh_token')?.value
+  if (refreshToken) {
+    await apiClient.post('/users/logout', { refreshToken }).catch(() => {})
+  }
   cookieStore.delete('auth_token')
+  cookieStore.delete('refresh_token')
 }
