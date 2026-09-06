@@ -40,7 +40,6 @@ O **Fiscalize Finanças** é uma plataforma web moderna de gestão financeira pe
 | 🏧 **Open Finance** | Conexão bancária via Pluggy para importação automática de extratos |
 | 🔐 **Autenticação Segura** | Login com JWT, registro de conta e recuperação de senha |
 | 📱 **Design Responsivo** | Interface otimizada para desktop e dispositivos móveis |
-| 🌙 **Tema Escuro** | Interface com tema escuro moderno e agradável |
 | 📈 **Gráficos Avançados** | Visualizações com ApexCharts e Chart.js |
 
 ---
