@@ -1,38 +1,33 @@
-<![CDATA[<div align="center">
-
 # 💰 Fiscalize Finanças
 
-### Plataforma Web de Gestão Financeira Pessoal
+<p align="center">
+  <strong>Plataforma Web de Gestão Financeira Pessoal</strong>
+</p>
 
-[![Next.js](https://img.shields.io/badge/Next.js-16-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
-[![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![Flowbite](https://img.shields.io/badge/Flowbite-React-1A56DB?style=for-the-badge&logo=flowbite&logoColor=white)](https://flowbite-react.com/)
-[![Turbopack](https://img.shields.io/badge/Turbopack-Enabled-F7DF1E?style=for-the-badge&logo=vercel&logoColor=black)](https://turbo.build/)
-[![License](https://img.shields.io/badge/License-Private-red?style=for-the-badge)](LICENSE)
+<p align="center">
+  <a href="https://nextjs.org/"><img src="https://img.shields.io/badge/Next.js-16-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" alt="Next.js"/></a>
+  <a href="https://react.dev/"><img src="https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React"/></a>
+  <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript"/></a>
+  <a href="https://tailwindcss.com/"><img src="https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind CSS"/></a>
+  <a href="https://flowbite-react.com/"><img src="https://img.shields.io/badge/Flowbite-React-1A56DB?style=for-the-badge&logo=flowbite&logoColor=white" alt="Flowbite"/></a>
+  <a href="https://turbo.build/"><img src="https://img.shields.io/badge/Turbopack-Enabled-F7DF1E?style=for-the-badge&logo=vercel&logoColor=black" alt="Turbopack"/></a>
+</p>
 
-<br/>
-
-**[Português](#-sobre-o-projeto)** · **[English](#-about-the-project)**
+<p align="center">
+  <a href="#-sobre-o-projeto"><strong>Português</strong></a> · <a href="#-about-the-project"><strong>English</strong></a>
+</p>
 
 ---
 
-<img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png" alt="divider" width="100%"/>
-
-</div>
-
-<br/>
-
 ## 🇧🇷 Documentação em Português
 
-<br/>
+---
 
 ## 📋 Sobre o Projeto
 
 O **Fiscalize Finanças** é uma plataforma web moderna de gestão financeira pessoal, construída com **Next.js 16** e **React 19**. A aplicação permite que os usuários tenham controle total sobre suas finanças — desde o registro de despesas extras, fixas e parceladas, até a conexão direta com contas bancárias via **Open Finance (Pluggy)**, com dashboards interativos e gráficos em tempo real.
 
-<br/>
+---
 
 ## ✨ Funcionalidades Principais
 
@@ -48,9 +43,9 @@ O **Fiscalize Finanças** é uma plataforma web moderna de gestão financeira pe
 | 🌙 **Tema Escuro** | Interface com tema escuro moderno e agradável |
 | 📈 **Gráficos Avançados** | Visualizações com ApexCharts e Chart.js |
 
-<br/>
+---
 
-## 🎨 Interface & Componentes
+## 🎨 Interface e Componentes
 
 ### Layout Principal
 
@@ -70,58 +65,58 @@ O **Fiscalize Finanças** é uma plataforma web moderna de gestão financeira pe
 | `PluggyOnboardingModal` | Assistente de conexão bancária via Open Finance |
 | `Modal` | Componente modal genérico reutilizável |
 
-<br/>
+---
 
 ## 🏗️ Arquitetura
 
 ```
 fiscalize-next/
 │
-├── 📂 public/                  # Arquivos estáticos (favicon, imagens)
+├── public/                     # Arquivos estáticos (favicon, imagens)
 │
-├── 📂 src/
-│   ├── 📂 app/                 # App Router (Next.js 16)
-│   │   ├── 📄 layout.tsx       # Layout raiz da aplicação
-│   │   ├── 📄 globals.css      # Estilos globais
+├── src/
+│   ├── app/                    # App Router (Next.js 16)
+│   │   ├── layout.tsx          # Layout raiz da aplicação
+│   │   ├── globals.css         # Estilos globais
 │   │   │
-│   │   ├── 📂 login/           # Página de login
-│   │   ├── 📂 register/        # Página de registro
-│   │   ├── 📂 reset-password/  # Recuperação de senha
+│   │   ├── login/              # Página de login
+│   │   ├── register/           # Página de registro
+│   │   ├── reset-password/     # Recuperação de senha
 │   │   │
-│   │   └── 📂 dashboard/       # Área principal (autenticada)
-│   │       ├── 📄 page.tsx             # Página do dashboard (SSR)
-│   │       ├── 📄 layout.tsx           # Layout com sidebar/header
-│   │       ├── 📄 dashboard-client.tsx # Lógica client-side do dashboard
-│   │       ├── 📄 dashboard-action.ts  # Server Actions
-│   │       └── 📄 pluggy-actions.ts    # Server Actions do Pluggy
+│   │   └── dashboard/          # Área principal (autenticada)
+│   │       ├── page.tsx                # Página do dashboard (SSR)
+│   │       ├── layout.tsx              # Layout com sidebar/header
+│   │       ├── dashboard-client.tsx    # Lógica client-side do dashboard
+│   │       ├── dashboard-action.ts     # Server Actions
+│   │       └── pluggy-actions.ts       # Server Actions do Pluggy
 │   │
-│   ├── 📂 components/          # Componentes reutilizáveis
-│   │   ├── 📄 AppSidebar.tsx
-│   │   ├── 📄 AppHeader.tsx
-│   │   ├── 📄 DashboardCard.tsx
-│   │   ├── 📄 Modal.tsx
-│   │   ├── 📄 ModalDespesa.tsx
-│   │   ├── 📄 ModalDespesaFixa.tsx
-│   │   ├── 📄 ModalCompraParcelada.tsx
-│   │   └── 📄 PluggyOnboardingModal.tsx
+│   ├── components/             # Componentes reutilizáveis
+│   │   ├── AppSidebar.tsx
+│   │   ├── AppHeader.tsx
+│   │   ├── DashboardCard.tsx
+│   │   ├── Modal.tsx
+│   │   ├── ModalDespesa.tsx
+│   │   ├── ModalDespesaFixa.tsx
+│   │   ├── ModalCompraParcelada.tsx
+│   │   └── PluggyOnboardingModal.tsx
 │   │
-│   ├── 📂 context/             # React Context (estado global)
-│   ├── 📂 icons/               # Ícones customizados
-│   ├── 📂 lib/                 # Utilitários e helpers
-│   ├── 📂 types/               # Definições de tipos TypeScript
+│   ├── context/                # React Context (estado global)
+│   ├── icons/                  # Ícones customizados
+│   ├── lib/                    # Utilitários e helpers
+│   ├── types/                  # Definições de tipos TypeScript
 │   │
-│   ├── 📄 proxy.ts             # Proxy de requisições para a API
-│   └── 📄 comum-functions.tsx  # Funções utilitárias compartilhadas
+│   ├── proxy.ts                # Proxy de requisições para a API
+│   └── comum-functions.tsx     # Funções utilitárias compartilhadas
 │
-├── 📄 next.config.ts           # Configuração do Next.js
-├── 📄 tailwind.config.cjs      # Configuração do Tailwind CSS
-├── 📄 tsconfig.json            # Configuração do TypeScript
-├── 📄 postcss.config.mjs       # Configuração do PostCSS
-├── 📄 eslint.config.mjs        # Configuração do ESLint
-└── 📄 package.json
+├── next.config.ts              # Configuração do Next.js
+├── tailwind.config.cjs         # Configuração do Tailwind CSS
+├── tsconfig.json               # Configuração do TypeScript
+├── postcss.config.mjs          # Configuração do PostCSS
+├── eslint.config.mjs           # Configuração do ESLint
+└── package.json
 ```
 
-<br/>
+---
 
 ## 🖥️ Páginas da Aplicação
 
@@ -132,13 +127,13 @@ fiscalize-next/
 | `/reset-password` | Recuperar Senha | Fluxo de recuperação com código por e-mail |
 | `/dashboard` | Dashboard | Painel principal com visão geral financeira |
 
-<br/>
+---
 
 ## 🚀 Início Rápido
 
 ### Pré-requisitos
 
-- **Node.js** ≥ 18
+- **Node.js** >= 18
 - **npm**, **yarn** ou **pnpm**
 - **Fiscalize API** rodando ([ver README da API](../Fiscalize-API-V1/README.md))
 
@@ -190,9 +185,9 @@ npm run lint
 
 > 💡 **Dica:** O projeto utiliza **Turbopack** por padrão no modo desenvolvimento para builds ultra-rápidos.
 
-<br/>
+---
 
-## 🛠️ Tecnologias & Dependências
+## 🛠️ Tecnologias e Dependências
 
 ### Core
 
@@ -203,7 +198,7 @@ npm run lint
 | TypeScript | 5.x | Tipagem estática |
 | Tailwind CSS | 4.x | Framework de estilos utility-first |
 
-### UI & Design
+### UI e Design
 
 | Biblioteca | Propósito |
 |:---|:---|
@@ -222,7 +217,7 @@ npm run lint
 | jwt-decode | Decodificação de tokens JWT no client |
 | server-only | Garantir código apenas no servidor |
 
-<br/>
+---
 
 ## 🔑 Funcionalidades por Tela
 
@@ -248,21 +243,18 @@ npm run lint
 - **Compras Parceladas**: Acompanhamento de parcelas com status
 - **Open Finance**: Conexão bancária, visualização de contas e transações
 
-<br/>
-
 ---
-
-<br/>
+---
 
 ## 🇺🇸 English Documentation
 
-<br/>
+---
 
 ## 📋 About the Project
 
 **Fiscalize Finanças** is a modern personal finance management web platform built with **Next.js 16** and **React 19**. The application allows users to have full control over their finances — from tracking extra, fixed, and installment expenses, to connecting directly with bank accounts via **Open Finance (Pluggy)**, with interactive dashboards and real-time charts.
 
-<br/>
+---
 
 ## ✨ Key Features
 
@@ -278,9 +270,9 @@ npm run lint
 | 🌙 **Dark Theme** | Modern and pleasant dark-themed interface |
 | 📈 **Advanced Charts** | Visualizations with ApexCharts and Chart.js |
 
-<br/>
+---
 
-## 🎨 Interface & Components
+## 🎨 Interface and Components
 
 ### Main Layout
 
@@ -300,58 +292,58 @@ npm run lint
 | `PluggyOnboardingModal` | Bank connection wizard via Open Finance |
 | `Modal` | Generic reusable modal component |
 
-<br/>
+---
 
 ## 🏗️ Architecture
 
 ```
 fiscalize-next/
 │
-├── 📂 public/                  # Static files (favicon, images)
+├── public/                     # Static files (favicon, images)
 │
-├── 📂 src/
-│   ├── 📂 app/                 # App Router (Next.js 16)
-│   │   ├── 📄 layout.tsx       # Root application layout
-│   │   ├── 📄 globals.css      # Global styles
+├── src/
+│   ├── app/                    # App Router (Next.js 16)
+│   │   ├── layout.tsx          # Root application layout
+│   │   ├── globals.css         # Global styles
 │   │   │
-│   │   ├── 📂 login/           # Login page
-│   │   ├── 📂 register/        # Registration page
-│   │   ├── 📂 reset-password/  # Password recovery
+│   │   ├── login/              # Login page
+│   │   ├── register/           # Registration page
+│   │   ├── reset-password/     # Password recovery
 │   │   │
-│   │   └── 📂 dashboard/       # Main area (authenticated)
-│   │       ├── 📄 page.tsx             # Dashboard page (SSR)
-│   │       ├── 📄 layout.tsx           # Layout with sidebar/header
-│   │       ├── 📄 dashboard-client.tsx # Client-side dashboard logic
-│   │       ├── 📄 dashboard-action.ts  # Server Actions
-│   │       └── 📄 pluggy-actions.ts    # Pluggy Server Actions
+│   │   └── dashboard/          # Main area (authenticated)
+│   │       ├── page.tsx                # Dashboard page (SSR)
+│   │       ├── layout.tsx              # Layout with sidebar/header
+│   │       ├── dashboard-client.tsx    # Client-side dashboard logic
+│   │       ├── dashboard-action.ts     # Server Actions
+│   │       └── pluggy-actions.ts       # Pluggy Server Actions
 │   │
-│   ├── 📂 components/          # Reusable components
-│   │   ├── 📄 AppSidebar.tsx
-│   │   ├── 📄 AppHeader.tsx
-│   │   ├── 📄 DashboardCard.tsx
-│   │   ├── 📄 Modal.tsx
-│   │   ├── 📄 ModalDespesa.tsx
-│   │   ├── 📄 ModalDespesaFixa.tsx
-│   │   ├── 📄 ModalCompraParcelada.tsx
-│   │   └── 📄 PluggyOnboardingModal.tsx
+│   ├── components/             # Reusable components
+│   │   ├── AppSidebar.tsx
+│   │   ├── AppHeader.tsx
+│   │   ├── DashboardCard.tsx
+│   │   ├── Modal.tsx
+│   │   ├── ModalDespesa.tsx
+│   │   ├── ModalDespesaFixa.tsx
+│   │   ├── ModalCompraParcelada.tsx
+│   │   └── PluggyOnboardingModal.tsx
 │   │
-│   ├── 📂 context/             # React Context (global state)
-│   ├── 📂 icons/               # Custom icons
-│   ├── 📂 lib/                 # Utilities and helpers
-│   ├── 📂 types/               # TypeScript type definitions
+│   ├── context/                # React Context (global state)
+│   ├── icons/                  # Custom icons
+│   ├── lib/                    # Utilities and helpers
+│   ├── types/                  # TypeScript type definitions
 │   │
-│   ├── 📄 proxy.ts             # API request proxy
-│   └── 📄 comum-functions.tsx  # Shared utility functions
+│   ├── proxy.ts                # API request proxy
+│   └── comum-functions.tsx     # Shared utility functions
 │
-├── 📄 next.config.ts           # Next.js configuration
-├── 📄 tailwind.config.cjs      # Tailwind CSS configuration
-├── 📄 tsconfig.json            # TypeScript configuration
-├── 📄 postcss.config.mjs       # PostCSS configuration
-├── 📄 eslint.config.mjs        # ESLint configuration
-└── 📄 package.json
+├── next.config.ts              # Next.js configuration
+├── tailwind.config.cjs         # Tailwind CSS configuration
+├── tsconfig.json               # TypeScript configuration
+├── postcss.config.mjs          # PostCSS configuration
+├── eslint.config.mjs           # ESLint configuration
+└── package.json
 ```
 
-<br/>
+---
 
 ## 🖥️ Application Pages
 
@@ -362,13 +354,13 @@ fiscalize-next/
 | `/reset-password` | Password Recovery | Recovery flow with email verification code |
 | `/dashboard` | Dashboard | Main panel with financial overview |
 
-<br/>
+---
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 
-- **Node.js** ≥ 18
+- **Node.js** >= 18
 - **npm**, **yarn**, or **pnpm**
 - **Fiscalize API** running ([see API README](../Fiscalize-API-V1/README.md))
 
@@ -420,9 +412,9 @@ npm run lint
 
 > 💡 **Tip:** The project uses **Turbopack** by default in development mode for ultra-fast builds.
 
-<br/>
+---
 
-## 🛠️ Tech Stack & Dependencies
+## 🛠️ Tech Stack and Dependencies
 
 ### Core
 
@@ -433,7 +425,7 @@ npm run lint
 | TypeScript | 5.x | Static typing |
 | Tailwind CSS | 4.x | Utility-first CSS framework |
 
-### UI & Design
+### UI and Design
 
 | Library | Purpose |
 |:---|:---|
@@ -452,7 +444,7 @@ npm run lint
 | jwt-decode | Client-side JWT token decoding |
 | server-only | Ensure server-only code |
 
-<br/>
+---
 
 ## 🔑 Features by Screen
 
@@ -478,36 +470,18 @@ npm run lint
 - **Installment Purchases**: Installment tracking with status
 - **Open Finance**: Bank connection, account and transaction viewing
 
-<br/>
-
-## 🛠️ Tech Stack
-
-<div align="center">
-
-| Technology | Purpose |
-|:---:|:---|
-| ![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=nextdotjs&logoColor=white) | React Framework |
-| ![React](https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=black) | UI Library |
-| ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white) | Static Typing |
-| ![Tailwind](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white) | Styling |
-| ![Flowbite](https://img.shields.io/badge/Flowbite-1A56DB?style=flat-square&logoColor=white) | UI Components |
-| ![ApexCharts](https://img.shields.io/badge/ApexCharts-008FFB?style=flat-square&logoColor=white) | Charts |
-| ![Pluggy](https://img.shields.io/badge/Pluggy-00D09C?style=flat-square&logoColor=white) | Open Finance |
-| ![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=vercel&logoColor=white) | Deployment |
-
-</div>
-
-<br/>
-
 ---
 
-<div align="center">
+<p align="center">
+  <img src="https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=nextdotjs&logoColor=white" alt="Next.js"/>
+  <img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=black" alt="React"/>
+  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript"/>
+  <img src="https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white" alt="Tailwind"/>
+  <img src="https://img.shields.io/badge/Flowbite-1A56DB?style=flat-square&logoColor=white" alt="Flowbite"/>
+  <img src="https://img.shields.io/badge/ApexCharts-008FFB?style=flat-square&logoColor=white" alt="ApexCharts"/>
+  <img src="https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=vercel&logoColor=white" alt="Vercel"/>
+</p>
 
-**Feito com ❤️ para o Fiscalize Finanças** · **Made with ❤️ for Fiscalize Finanças**
-
-<br/>
-
-[⬆️ Voltar ao topo / Back to top](#-fiscalize-finanças)
-
-</div>
-]]>
+<p align="center">
+  <strong>Feito com ❤️ para o Fiscalize Finanças</strong> · <strong>Made with ❤️ for Fiscalize Finanças</strong>
+</p>
