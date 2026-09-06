@@ -1,12 +1,15 @@
 import type { NextConfig } from "next";
 
+const apiBase = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:3002/api';
+const apiOrigin = new URL(apiBase).origin;
+
 const cspHeader = `
   default-src 'self';
   script-src 'self' 'unsafe-eval' 'unsafe-inline';
   style-src 'self' 'unsafe-inline';
   img-src 'self' blob: data: https://assets.pluggy.ai;
   font-src 'self' data:;
-  connect-src 'self' http://localhost:3002 https://*.pluggy.ai;
+  connect-src 'self' ${apiOrigin} https://*.pluggy.ai;
   frame-src 'self' https://connect.pluggy.ai;
   frame-ancestors 'none';
   object-src 'none';

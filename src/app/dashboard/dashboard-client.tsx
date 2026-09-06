@@ -595,10 +595,10 @@ export default function DashboardClient({
         )}
       </div>
 
-      <div className="flex justify-between">
+      <div className="flex flex-col lg:flex-row lg:justify-between gap-5">
 
 
-        <div className="w-[40%]">
+        <div className="w-full lg:w-[40%] order-2 lg:order-1">
           <div className="">
             <div className="mb-5">
               <div className="rounded-2xl border border-gray-200 bg-white overflow-hidden shadow-sm">
@@ -889,7 +889,7 @@ export default function DashboardClient({
         </div>
 
 
-        <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm space-y-4 w-[58%]">
+        <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm space-y-4 w-full lg:w-[58%] order-1 lg:order-2">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 pb-4">
             <div>
               <h2 className="text-base font-bold text-gray-900">Extrato Bancário Automático</h2>
